@@ -12,10 +12,14 @@ import (
 )
 
 const (
-	UTF8BOM       = "\xEF\xBB\xBF"
-	TimeFormat    = "2006-01-02 15:04:05"
-	FileRootPath  = "/opt/files"
-	CSVFileSuffix = ".csv"
+	UTF8BOM            = "\xEF\xBB\xBF"
+	TimeFormat         = "2006-01-02 15:04:05"
+	FileRootPath       = "/opt/files"
+	CSVFileSuffix      = ".csv"
+	UploadDirectoryKey = "directory"
+	UploadFileKey      = "path"
+	UploadFileName     = "filename"
+	FileResourceName = "files"
 )
 
 const (
@@ -163,4 +167,14 @@ func ParseTableFields(tableFields, tableHeaderFields, mandatoryFields []string) 
 	}
 
 	return fields, missingMandatory, emptyFieldCnt == len(tableFields)
+}
+
+func CreateUploadFolder(folderName string) error {
+	if _, err := os.Stat(path.Join(FileRootPath, folderName)); os.IsNotExist(err) {
+		if err := os.Mkdir(path.Join(FileRootPath, folderName), 0777); err != nil {
+			return fmt.Errorf("createFolder %s failed:%s ", folderName, err.Error())
+		}
+	}
+
+	return nil
 }
