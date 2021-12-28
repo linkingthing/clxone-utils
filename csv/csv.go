@@ -19,7 +19,7 @@ const (
 	UploadDirectoryKey = "directory"
 	UploadFileKey      = "path"
 	UploadFileName     = "filename"
-	FileResourceName = "files"
+	FileResourceName   = "files"
 )
 
 const (
