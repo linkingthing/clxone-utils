@@ -6,6 +6,14 @@ import (
 	restresource "github.com/linkingthing/gorest/resource"
 )
 
+const (
+	FilterNameName       = "name"
+	FilterNameComment    = "comment"
+	FilterNameCreateTime = "create_time"
+	IgnoreAuditLog       = "ignoreAuditLog"
+	SymbolComma          = ","
+)
+
 func GenStrConditionsFromFilters(filters []restresource.Filter, filterNames ...string) map[string]interface{} {
 	if len(filters) == 0 {
 		return nil
