@@ -12,6 +12,13 @@ const (
 	FilterNameCreateTime = "create_time"
 	IgnoreAuditLog       = "ignoreAuditLog"
 	SymbolComma          = ","
+
+	FilterNameTimeFrom = "from"
+	FilterNameTimeTo   = "to"
+	TimeFromSuffix     = " 00:00"
+	TimeToSuffix       = " 23:59"
+	TimeFormatYMD      = "2006-01-02"
+	TimeFormatYMDHM    = "2006-01-02 15:04"
 )
 
 func GenStrConditionsFromFilters(filters []restresource.Filter, filterNames ...string) map[string]interface{} {
