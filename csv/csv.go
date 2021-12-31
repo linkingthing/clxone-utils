@@ -20,6 +20,7 @@ const (
 	UploadFileKey      = "path"
 	UploadFileName     = "filename"
 	FileResourceName   = "files"
+	IgnoreAuditLog     = "ignoreAuditLog"
 )
 
 const (
