@@ -1,6 +1,7 @@
 package util
 
 import (
+	"github.com/linkingthing/cement/log"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -31,10 +32,8 @@ func UploadFiles(ctx *gin.Context) {
 	var fileNames string
 	for _, file := range files {
 		if err := CreateUploadFolder(directory); err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
+			log.Warnf("create upload folder failed:%s", err.Error())
+			continue
 		}
 		filename := path.Join(directory, filepath.Base(file.Filename))
 		if err := ctx.SaveUploadedFile(file, path.Join(FileRootPath, filename)); err != nil {
