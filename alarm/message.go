@@ -9,7 +9,7 @@ import (
 	pb "github.com/linkingthing/clxone-utils/alarm/proto"
 )
 
-func (a *Alarm) getThreshold(name pb.ThresholdName) *Threshold {
+func (a *Alarm) GetThreshold(name pb.ThresholdName) *Threshold {
 	a.Lock()
 	defer a.Unlock()
 	threshold, ok := a.ThresholdMap[name]
@@ -38,7 +38,7 @@ func (a *Alarm) sendAlarmToKafka(threshold *Threshold, message, messageDic, cmd 
 }
 
 func (a *Alarm) AddCpuUsageAlarm(ip string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_cpuUsedRatio)
+	threshold := a.GetThreshold(pb.ThresholdName_cpuUsedRatio)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -52,7 +52,7 @@ func (a *Alarm) AddCpuUsageAlarm(ip string, value uint64) error {
 }
 
 func (a *Alarm) AddMemoryUsageAlarm(ip string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_memoryUsedRatio)
+	threshold := a.GetThreshold(pb.ThresholdName_memoryUsedRatio)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -66,7 +66,7 @@ func (a *Alarm) AddMemoryUsageAlarm(ip string, value uint64) error {
 }
 
 func (a *Alarm) AddStorageUsageAlarm(ip string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_storageUsedRatio)
+	threshold := a.GetThreshold(pb.ThresholdName_storageUsedRatio)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -80,7 +80,7 @@ func (a *Alarm) AddStorageUsageAlarm(ip string, value uint64) error {
 }
 
 func (a *Alarm) AddSubnetRadioAlarm(ip, subnet string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_subnetUsedRatio)
+	threshold := a.GetThreshold(pb.ThresholdName_subnetUsedRatio)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -94,7 +94,7 @@ func (a *Alarm) AddSubnetRadioAlarm(ip, subnet string, value uint64) error {
 }
 
 func (a *Alarm) AddSubnetConflictAlarm(name string) error {
-	threshold := a.getThreshold(pb.ThresholdName_subnetConflict)
+	threshold := a.GetThreshold(pb.ThresholdName_subnetConflict)
 	if threshold == nil {
 		return nil
 	}
@@ -106,7 +106,7 @@ func (a *Alarm) AddSubnetConflictAlarm(name string) error {
 }
 
 func (a *Alarm) AddQPSAlarm(ip string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_qps)
+	threshold := a.GetThreshold(pb.ThresholdName_qps)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -120,7 +120,7 @@ func (a *Alarm) AddQPSAlarm(ip string, value uint64) error {
 }
 
 func (a *Alarm) AddLPSAlarm(ip string, value uint64) error {
-	threshold := a.getThreshold(pb.ThresholdName_lps)
+	threshold := a.GetThreshold(pb.ThresholdName_lps)
 	if threshold == nil {
 		return nil
 	} else if value < threshold.Value {
@@ -134,7 +134,7 @@ func (a *Alarm) AddLPSAlarm(ip string, value uint64) error {
 }
 
 func (a *Alarm) AddHaTriggerAlarm(cmd, role, master, slave string) error {
-	threshold := a.getThreshold(pb.ThresholdName_haTrigger)
+	threshold := a.GetThreshold(pb.ThresholdName_haTrigger)
 	if threshold == nil {
 		return nil
 	}
@@ -146,7 +146,7 @@ func (a *Alarm) AddHaTriggerAlarm(cmd, role, master, slave string) error {
 }
 
 func (a *Alarm) AddNodeOfflineAlarm(ip string) error {
-	threshold := a.getThreshold(pb.ThresholdName_nodeOffline)
+	threshold := a.GetThreshold(pb.ThresholdName_nodeOffline)
 	if threshold == nil {
 		return nil
 	}
@@ -158,7 +158,7 @@ func (a *Alarm) AddNodeOfflineAlarm(ip string) error {
 }
 
 func (a *Alarm) AddServiceOfflineAlarm(name string) error {
-	threshold := a.getThreshold(pb.ThresholdName_serviceOffline)
+	threshold := a.GetThreshold(pb.ThresholdName_serviceOffline)
 	if threshold == nil {
 		return nil
 	}
@@ -170,7 +170,7 @@ func (a *Alarm) AddServiceOfflineAlarm(name string) error {
 }
 
 func (a *Alarm) AddIpConflictAlarm(ip string) error {
-	threshold := a.getThreshold(pb.ThresholdName_ipConflict)
+	threshold := a.GetThreshold(pb.ThresholdName_ipConflict)
 	if threshold == nil {
 		return nil
 	}
@@ -182,7 +182,7 @@ func (a *Alarm) AddIpConflictAlarm(ip string) error {
 }
 
 func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
-	threshold := a.getThreshold(pb.ThresholdName_illegalDhcp)
+	threshold := a.GetThreshold(pb.ThresholdName_illegalDhcp)
 	if threshold == nil {
 		return nil
 	}
@@ -194,7 +194,7 @@ func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
 }
 
 func (a *Alarm) AddIpMacObsoletedAlarm(ip, obsolete, current string) error {
-	threshold := a.getThreshold(pb.ThresholdName_ipMacObsoleted)
+	threshold := a.GetThreshold(pb.ThresholdName_ipMacObsoleted)
 	if threshold == nil {
 		return nil
 	}
@@ -206,7 +206,7 @@ func (a *Alarm) AddIpMacObsoletedAlarm(ip, obsolete, current string) error {
 }
 
 func (a *Alarm) AddIpPortObsoletedAlarm(port int, obsolete, current string) error {
-	threshold := a.getThreshold(pb.ThresholdName_ipPortObsoleted)
+	threshold := a.GetThreshold(pb.ThresholdName_ipPortObsoleted)
 	if threshold == nil {
 		return nil
 	}
@@ -218,7 +218,7 @@ func (a *Alarm) AddIpPortObsoletedAlarm(port int, obsolete, current string) erro
 }
 
 func (a *Alarm) AddUnmanagedIpAlarm(ip, subnet string) error {
-	threshold := a.getThreshold(pb.ThresholdName_ipUnmanaged)
+	threshold := a.GetThreshold(pb.ThresholdName_ipUnmanaged)
 	if threshold == nil {
 		return nil
 	}
