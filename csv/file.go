@@ -15,7 +15,7 @@ func RegisterFileApi(router *gin.Engine, apiPath string) {
 }
 
 func UploadFiles(ctx *gin.Context) {
-	ctx.Request.Header.Set(IgnoreAuditLog, IgnoreAuditLog)
+	ctx.Writer.Header().Add(IgnoreAuditLog, IgnoreAuditLog)
 	form, err := ctx.MultipartForm()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
