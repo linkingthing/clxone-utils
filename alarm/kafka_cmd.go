@@ -15,7 +15,6 @@ const (
 
 const (
 	AlarmTopic = "alarm"
-	DnsAlarmTopic = "dns"
 
 	CmdCpuUsageAlarm        = "cpu_usage_alarm"
 	CmdMemoryUsageAlarm     = "memory_usage_alarm"

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/linkingthing/cement/log"
 	kg "github.com/segmentio/kafka-go"
 
 	pb "github.com/linkingthing/clxone-utils/alarm/proto"
@@ -90,17 +89,17 @@ func (a *Alarm) listenThreshold() {
 	for {
 		message, err := a.thresholdReader.ReadMessage(context.Background())
 		if err != nil {
-			log.Warnf("read threshold message from kg failed: %s", err.Error())
+			fmt.Printf("read threshold message from kg failed: %s\n", err.Error())
 			continue
 		}
 
 		switch string(message.Key) {
 		case UpdateThreshold:
-			var req *pb.UpdateThreshold
-			if err := proto.Unmarshal(message.Value, req); err != nil {
-				log.Errorf("unmarshal update threshold failed: %s", err.Error())
+			var req pb.UpdateThreshold
+			if err := proto.Unmarshal(message.Value, &req); err != nil {
+				fmt.Printf("unmarshal update threshold failed: %s\n", err.Error())
 			} else {
-				a.updateThreshold(req)
+				a.updateThreshold(&req)
 			}
 		}
 	}
