@@ -145,10 +145,10 @@ func genIllegalDhcpMessageCh(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageCh(ip, obsolete, current string) string {
+func genIpMacObsoletedMessageCh(mac, obsolete, current string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString(ip)
-	buf.WriteString("的MAC地址由 ")
+	buf.WriteString(mac)
+	buf.WriteString("的IP地址由 ")
 	buf.WriteString(obsolete)
 	buf.WriteString("变更为 ")
 	buf.WriteString(current)

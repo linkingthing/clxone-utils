@@ -136,10 +136,10 @@ func genIllegalDhcpMessageEn(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageEn(ip, obsolete, current string) string {
+func genIpMacObsoletedMessageEn(mac, obsolete, current string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString(ip)
-	buf.WriteString(" MAC address changed from ")
+	buf.WriteString(mac)
+	buf.WriteString(" address changed from ")
 	buf.WriteString(obsolete)
 	buf.WriteString(" to ")
 	buf.WriteString(current)
