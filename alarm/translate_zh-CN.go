@@ -175,3 +175,13 @@ func zhCNUnManagedIpMsg(ip, subnet string) string {
 	buf.WriteString("不在系统规划范围内")
 	return buf.String()
 }
+
+func genZombieIpMessageCh(ip string, timeOut int64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("僵尸地址 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 超过 ")
+	buf.WriteString(strconv.FormatInt(timeOut, 10))
+	buf.WriteString(" 小时未上线")
+	return buf.String()
+}

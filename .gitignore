@@ -1,0 +1,5 @@
+*.swp
+temp
+*.sql
+generate.go
+.idea

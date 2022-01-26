@@ -31,4 +31,5 @@ const (
 	CmdIpMacObsoletedAlarm  = "ip_mac_obsoleted_alarm"
 	CmdIpPortObsoletedAlarm = "ip_port_obsoleted_alarm"
 	CmdIpUnmanagedAlarm     = "ip_unmanaged_alarm"
+	CmdZombieIpAlarm        = "zombie_ip_alarm"
 )

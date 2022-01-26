@@ -162,4 +162,14 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
+	pb.ThresholdName_zombieIp: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_zombieIp,
+			Level: pb.ThresholdLevel_critical,
+			Type:  pb.ThresholdType_values,
+		},
+		Enabled:  true,
+		SendMail: false,
+		Value:    0,
+	},
 }

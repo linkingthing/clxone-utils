@@ -228,3 +228,15 @@ func (a *Alarm) AddUnmanagedIpAlarm(ip, subnet string) error {
 		zhCNUnManagedIpMsg(ip, subnet),
 		CmdIpUnmanagedAlarm)
 }
+
+func (a *Alarm) AddZombieIpAlarm(ip string, timeOut int64) error {
+	threshold := a.GetThreshold(pb.ThresholdName_zombieIp)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genZombieIpMessageEn(ip, timeOut),
+		genZombieIpMessageCh(ip, timeOut),
+		CmdZombieIpAlarm)
+}
