@@ -165,7 +165,7 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 	pb.ThresholdName_zombieIp: {
 		BaseThreshold: &pb.BaseThreshold{
 			Name:  pb.ThresholdName_zombieIp,
-			Level: pb.ThresholdLevel_critical,
+			Level: pb.ThresholdLevel_major,
 			Type:  pb.ThresholdType_values,
 		},
 		Enabled:  true,
