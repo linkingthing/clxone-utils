@@ -170,6 +170,6 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		},
 		Enabled:  true,
 		SendMail: false,
-		Value:    0,
+		Value:    168,
 	},
 }
