@@ -91,14 +91,14 @@ func genHaTriggerMessageCh(cmd, role, master, slave string) string {
 	buf.WriteString(role)
 	buf.WriteString("由")
 	if HaCmd(cmd) == HaCmdMasterUp {
-		buf.WriteString("主节点 ")
+		buf.WriteString("辅节点 ")
 		buf.WriteString(slave)
-		buf.WriteString("切换到辅节点 ")
+		buf.WriteString("切换到主节点 ")
 		buf.WriteString(master)
 	} else if HaCmd(cmd) == HaCmdMasterDown {
-		buf.WriteString("辅节点 ")
+		buf.WriteString("主节点 ")
 		buf.WriteString(master)
-		buf.WriteString("切换到主节点 ")
+		buf.WriteString("切换到辅节点 ")
 		buf.WriteString(slave)
 	}
 	return buf.String()
