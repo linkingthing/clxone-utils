@@ -87,7 +87,7 @@ func genLpsMessageCh(ip string, value, limit uint64) string {
 
 func genHaTriggerMessageCh(cmd, role, master, slave string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("服务 ")
 	buf.WriteString(role)
 	buf.WriteString("由")
 	if HaCmd(cmd) == HaCmdMasterUp {
