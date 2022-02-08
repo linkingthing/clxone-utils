@@ -78,7 +78,7 @@ func genLpsMessageEn(ip string, value, limit uint64) string {
 
 func genHaTriggerMessageEn(cmd, role, master, slave string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("node ")
+	buf.WriteString("serve ")
 	buf.WriteString(role)
 	buf.WriteString(" switch from")
 	if HaCmd(cmd) == HaCmdMasterUp {
