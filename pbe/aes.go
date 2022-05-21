@@ -63,3 +63,12 @@ func PKCS5UnPadding(ciphertext []byte) []byte {
 	length := len(ciphertext)
 	return ciphertext[:(length - int(ciphertext[length-1]))]
 }
+
+func RandomBase64(size int) (string, error) {
+	buf := make([]byte, size)
+	if _, err := rand.Read(buf); err != nil {
+		return "", err
+	} else {
+		return base64.StdEncoding.EncodeToString(buf), nil
+	}
+}

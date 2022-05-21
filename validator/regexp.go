@@ -33,11 +33,16 @@ var NameRegs = []*NameRegexp{
 	},
 }
 
-func CheckStringValid(s string) error {
+func ValidateString(s string) error {
+	if s == "" {
+		return nil
+	}
+
 	for _, reg := range NameRegs {
 		if ret := reg.Regexp.MatchString(s); ret != reg.ExpectResult {
 			return fmt.Errorf("%s %s", s, reg.ErrMsg)
 		}
 	}
+
 	return nil
 }
