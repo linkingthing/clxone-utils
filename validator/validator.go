@@ -14,23 +14,23 @@ type StringRegexp struct {
 var StringRegexps = []*StringRegexp{
 	{
 		Regexp:       regexp.MustCompile(`^[0-9a-zA-Z-_/,，、\p{Han}@*]+$`),
-		ErrMsg:       "is not legal",
+		ErrMsg:       "is illegal",
 		ExpectResult: true,
 	},
 	{
 		Regexp:       regexp.MustCompile(`(^-)|(^\.)|(^/)|(^,)|(^，)|(^、)`),
-		ErrMsg:       "is not legal",
+		ErrMsg:       "is illegal",
 		ExpectResult: false,
 	},
 	{
 		Regexp:       regexp.MustCompile(`-$|_$|/$|，$|、$|,$|\.$`),
-		ErrMsg:       "is not legal",
+		ErrMsg:       "is illegal",
 		ExpectResult: false,
 	},
 }
 
-func ValidateString(s string) error {
-	if s != "" {
+func ValidateStrings(ss ...string) error {
+	for _, s := range ss {
 		for _, reg := range StringRegexps {
 			if ret := reg.Regexp.MatchString(s); ret != reg.ExpectResult {
 				return fmt.Errorf("%s %s", s, reg.ErrMsg)
