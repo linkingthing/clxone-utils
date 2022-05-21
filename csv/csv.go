@@ -97,6 +97,10 @@ func WriteCSVFile(fileName string, tableHeader []string, contents [][]string) (s
 }
 
 func ReadCSVFile(fileName string) ([][]string, error) {
+	if strings.Contains(fileName, "../") {
+		return nil, fmt.Errorf("file name invalid with path traversal attacks")
+	}
+
 	file, err := os.Open(path.Join(FileRootPath, fileName))
 	if err != nil {
 		return nil, err
