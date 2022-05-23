@@ -31,9 +31,11 @@ var StringRegexps = []*StringRegexp{
 
 func ValidateStrings(ss ...string) error {
 	for _, s := range ss {
-		for _, reg := range StringRegexps {
-			if ret := reg.Regexp.MatchString(s); ret != reg.ExpectResult {
-				return fmt.Errorf("%s %s", s, reg.ErrMsg)
+		if s != "" {
+			for _, reg := range StringRegexps {
+				if ret := reg.Regexp.MatchString(s); ret != reg.ExpectResult {
+					return fmt.Errorf("%s %s", s, reg.ErrMsg)
+				}
 			}
 		}
 	}

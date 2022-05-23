@@ -16,6 +16,7 @@ func TestValid(t *testing.T) {
 		"a@a",
 		"a,a",
 		"a，、/a",
+		"",
 	}
 
 	if err := ValidateStrings(ss...); err != nil {
