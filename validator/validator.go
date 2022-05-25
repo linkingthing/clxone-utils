@@ -13,7 +13,7 @@ type StringRegexp struct {
 
 var StringRegexps = []*StringRegexp{
 	{
-		Regexp:       regexp.MustCompile(`^[0-9a-zA-Z-_/,，、:.\p{Han}@*]+$`),
+		Regexp:       regexp.MustCompile(`^[0-9a-zA-Z-_/,，、:.>\p{Han}@*]+$`),
 		ErrMsg:       "is illegal",
 		ExpectResult: true,
 	},

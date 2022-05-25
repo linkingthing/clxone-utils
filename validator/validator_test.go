@@ -17,6 +17,7 @@ func TestValid(t *testing.T) {
 		"a,a",
 		"a，、/a",
 		"",
+		"中国>四川",
 	}
 
 	if err := ValidateStrings(ss...); err != nil {
