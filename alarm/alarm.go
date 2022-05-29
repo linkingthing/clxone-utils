@@ -2,12 +2,14 @@ package alarm
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"sync"
 	"time"
 
 	"github.com/golang/protobuf/proto"
 	kg "github.com/segmentio/kafka-go"
+	"github.com/segmentio/kafka-go/sasl/plain"
 
 	pb "github.com/linkingthing/clxone-utils/alarm/proto"
 )
@@ -24,6 +26,8 @@ type KafkaConf struct {
 	Addresses []string
 	Topic     string
 	GroupId   string
+	Username  string
+	Password  string
 }
 
 func RegisterAlarm(kafkaConfig KafkaConf, thresholds ...*Threshold) (*Alarm, error) {
@@ -64,23 +68,51 @@ func (a *Alarm) initKafka(kafkaConfig KafkaConf) {
 		GroupID:  kafkaConfig.GroupId,
 		MinBytes: 10,
 		MaxBytes: 10e6,
-	})
-	a.alarmWriter = kg.NewWriter(kg.WriterConfig{
-		Brokers:   kafkaConfig.Addresses,
-		BatchSize: 1,
 		Dialer: &kg.Dialer{
-			Timeout:   time.Second * 10,
+			Timeout:   10 * time.Second,
 			DualStack: true,
-			KeepAlive: time.Second * 5},
+			SASLMechanism: plain.Mechanism{
+				Username: kafkaConfig.Username,
+				Password: kafkaConfig.Password,
+			},
+			TLS: &tls.Config{InsecureSkipVerify: true},
+		},
 	})
-	a.thresholdWriter = kg.NewWriter(kg.WriterConfig{
-		Brokers:   kafkaConfig.Addresses,
+
+	a.alarmWriter = &kg.Writer{
+		Transport: &kg.Transport{
+			SASL: plain.Mechanism{
+				Username: kafkaConfig.Username,
+				Password: kafkaConfig.Password,
+			},
+			TLS: &tls.Config{InsecureSkipVerify: true},
+		},
+		Addr:      kg.TCP(kafkaConfig.Addresses...),
 		BatchSize: 1,
-		Dialer: &kg.Dialer{
-			Timeout:   time.Second * 10,
-			DualStack: true,
-			KeepAlive: time.Second * 5},
-	})
+		Balancer:  &kg.LeastBytes{},
+	}
+
+	a.thresholdWriter = &kg.Writer{
+		Transport: &kg.Transport{
+			SASL: plain.Mechanism{
+				Username: kafkaConfig.Username,
+				Password: kafkaConfig.Password,
+			},
+			TLS: &tls.Config{InsecureSkipVerify: true},
+		},
+		Addr:      kg.TCP(kafkaConfig.Addresses...),
+		BatchSize: 1,
+		Balancer:  &kg.LeastBytes{},
+	}
+}
+
+func (a *Alarm) Close() {
+	if a.alarmWriter != nil {
+		a.alarmWriter.Close()
+	}
+	if a.thresholdWriter != nil {
+		a.thresholdWriter.Close()
+	}
 }
 
 func (a *Alarm) listenThreshold() {
