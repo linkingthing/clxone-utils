@@ -18,11 +18,11 @@ type Client struct {
 	Password string
 }
 
-func NewHttpClient() (*Client, error) {
+func NewHttpClient() *Client {
 	return &Client{Client: &http.Client{
 		Timeout:   30 * time.Second,
-		Transport: &http.Transport{DisableKeepAlives: true},
-	}}, nil
+		Transport: &http.Transport{DisableKeepAlives: true, TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
+	}}
 }
 
 func NewHttpsClient(certPem, keyPem []byte) (*Client, error) {
