@@ -36,7 +36,7 @@ func TestDecrypt(t *testing.T) {
 	password, err := Decrypt(&DecryptContext{
 		KeyFactoryBase64: "ADnD/LjHGmdeUUdmoLHKcgXH9+roVeDozTywwkiQTu0=",
 		EncryptWorkKey:   "cmaoqjXY9x1z7aWUHcTcS7bntPruOWYyzqS5XdciN9GihUrus1cJ_57UvYVYwDf2QZBzkMO79G4Y7LOgTw3MfQ==",
-		EncryptPassword:  "b16cyCn-S7nSZsetpIYv61iJmEnqSkWkzJ7PoZs3q3VCvkcZbbKB0i7X2f-oONEjo0JTUnYfYcJmyD0V1M7Cjg==",
+		EncryptPassword:  "A5tKnGwd7GeoAfR0EwvjpyChfRDizQ8_h2jLqEwac9mYhpu3EDC6hVT6oKCIVICdGOv9rkUN3Y4NIKM3NZIWnw==",
 		Iterator:         10000,
 	})
 	if err != nil {
