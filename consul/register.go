@@ -42,10 +42,6 @@ func register(conf *consulapi.Config, registration consulapi.AgentServiceRegistr
 		return nil, fmt.Errorf("new consul client failed: %s", err.Error())
 	}
 
-	if registration.Check != nil {
-		registration.Checks = consulapi.AgentServiceChecks{registration.Check}
-	}
-
 	return NewRegistrar(consulsd.NewClient(consulClient), &registration), nil
 }
 
