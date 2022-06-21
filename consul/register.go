@@ -17,6 +17,7 @@ var defaultCheck = &consulapi.AgentServiceCheck{
 func RegisterHttp(conf *consulapi.Config, registration consulapi.AgentServiceRegistration) (*Registrar, error) {
 	if check := registration.Check; check == nil {
 		check = defaultCheck
+		check.GRPC = ""
 		check.HTTP = fmt.Sprintf("http://%v:%v/health", registration.Address, registration.Port)
 		registration.Check = check
 	}
@@ -27,6 +28,7 @@ func RegisterHttp(conf *consulapi.Config, registration consulapi.AgentServiceReg
 func RegisterGrpc(conf *consulapi.Config, registration consulapi.AgentServiceRegistration) (*Registrar, error) {
 	if check := registration.Check; check == nil {
 		check = defaultCheck
+		check.HTTP = ""
 		check.GRPC = fmt.Sprintf("%v:%v", registration.Address, registration.Port)
 		registration.Check = check
 	}
