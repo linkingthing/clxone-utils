@@ -103,9 +103,11 @@ func genNodeOfflineMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genServiceOfflineMessageEn(name string) string {
+func genServiceOfflineMessageEn(node, name string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("service ")
+	buf.WriteString("node ")
+	buf.WriteString(node)
+	buf.WriteString(" service ")
 	buf.WriteString(name)
 	buf.WriteString(" offline")
 	return buf.String()

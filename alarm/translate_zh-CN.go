@@ -112,9 +112,11 @@ func genNodeOfflineMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genServiceOfflineMessageCh(name string) string {
+func genServiceOfflineMessageCh(node, name string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("服务 ")
+	buf.WriteString("节点 ")
+	buf.WriteString(node)
+	buf.WriteString(" 服务 ")
 	buf.WriteString(name)
 	buf.WriteString("离线")
 	return buf.String()

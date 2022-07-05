@@ -157,15 +157,15 @@ func (a *Alarm) AddNodeOfflineAlarm(ip string) error {
 		CmdNodeOfflineAlarm)
 }
 
-func (a *Alarm) AddServiceOfflineAlarm(name string) error {
+func (a *Alarm) AddServiceOfflineAlarm(node, name string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_serviceOffline)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genServiceOfflineMessageEn(name),
-		genServiceOfflineMessageCh(name),
+		genServiceOfflineMessageEn(node, name),
+		genServiceOfflineMessageCh(node, name),
 		CmdServiceOfflineAlarm)
 }
 
