@@ -14,7 +14,6 @@ import (
 const (
 	UTF8BOM            = "\xEF\xBB\xBF"
 	TimeFormat         = "2006-01-02 15:04:05"
-	FileRootPath       = "/opt/files"
 	CSVFileSuffix      = ".csv"
 	UploadDirectoryKey = "directory"
 	UploadFileKey      = "path"
@@ -22,6 +21,8 @@ const (
 	FileResourceName   = "files"
 	IgnoreAuditLog     = "ignoreAuditLog"
 )
+
+var FileRootPath = "/opt/files"
 
 const (
 	ActionNameImportCSV           = "importcsv"

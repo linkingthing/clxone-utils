@@ -3,6 +3,7 @@ package util
 import (
 	"github.com/linkingthing/cement/log"
 	"net/http"
+	"os"
 	"path"
 	"path/filepath"
 
@@ -48,4 +49,14 @@ func UploadFiles(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		UploadFileName: fileNames,
 	})
+}
+
+func RemoveFile(fileName string) error {
+	if fileName != "" {
+		if f, _ := os.Stat(path.Join(FileRootPath, fileName)); f != nil {
+			return os.Remove(path.Join(FileRootPath, fileName))
+		}
+	}
+
+	return nil
 }
