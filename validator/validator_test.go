@@ -18,6 +18,12 @@ func TestValid(t *testing.T) {
 		"a，、/a",
 		"",
 		"中国>四川",
+		"https://127.0.0.1:22",
+		"https://[::1]:22",
+		"https://www.baidu.com",
+		"127.0.0.1",
+		"你好(2001)",
+		"你（好）吗",
 	}
 
 	if err := ValidateStrings(ss...); err != nil {
