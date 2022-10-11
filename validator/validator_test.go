@@ -24,6 +24,7 @@ func TestValid(t *testing.T) {
 		"127.0.0.1",
 		"你好(2001)",
 		"你（好）吗",
+		"你 好",
 	}
 
 	if err := ValidateStrings(ss...); err != nil {
