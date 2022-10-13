@@ -1,14 +1,20 @@
 package util
 
 import (
+	"bytes"
 	"encoding/csv"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"os"
 	"path"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/linkingthing/cement/slice"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 )
 
 const (
@@ -73,6 +79,10 @@ func (result *ImportResult) FlushResult(fileName string, tableHeader []string) e
 }
 
 func WriteCSVFile(fileName string, tableHeader []string, contents [][]string) (string, error) {
+	if len(fileName) == 0 {
+		return "", fmt.Errorf("empty file")
+	}
+
 	fileName = fileName + CSVFileSuffix
 	filepath := path.Join(FileRootPath, fileName)
 	file, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -98,6 +108,10 @@ func WriteCSVFile(fileName string, tableHeader []string, contents [][]string) (s
 }
 
 func ReadCSVFile(fileName string) ([][]string, error) {
+	if len(fileName) == 0 {
+		return nil, fmt.Errorf("file is empty")
+	}
+
 	if strings.Contains(fileName, "../") {
 		return nil, fmt.Errorf("file name invalid with path traversal attacks")
 	}
@@ -106,19 +120,31 @@ func ReadCSVFile(fileName string) ([][]string, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	defer file.Close()
-	contents, err := csv.NewReader(file).ReadAll()
+
+	b, err := ioutil.ReadAll(file)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(contents) > 1 && len(contents[0]) > 1 {
-		firstField := strings.TrimLeft(contents[0][0], UTF8BOM)
-		contents[0] = append([]string{firstField}, contents[0][1:]...)
+	r := csv.NewReader(bytes.NewReader(b))
+	header, err := r.Read()
+	if err != nil && err != io.EOF {
+		return nil, err
+	} else if !utf8.ValidString(header[0]) {
+		r = csv.NewReader(transform.NewReader(bytes.NewReader(b), simplifiedchinese.GB18030.NewDecoder()))
+		if header, err = r.Read(); err != nil {
+			return nil, err
+		}
 	}
 
-	return contents, nil
+	contents, err := r.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	header[0] = strings.TrimLeft(header[0], UTF8BOM)
+	return append([][]string{header}, contents...), nil
 }
 
 func IsSpaceField(field string) bool {
