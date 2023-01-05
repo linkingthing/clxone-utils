@@ -240,3 +240,15 @@ func (a *Alarm) AddZombieIpAlarm(ip string, timeOut int64) error {
 		genZombieIpMessageCh(ip, timeOut),
 		CmdZombieIpAlarm)
 }
+
+func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
+	threshold := a.GetThreshold(pb.ThresholdName_expireIp)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genExpireIpMessageEn(ip, timeOut),
+		genExpireIpMessageCh(ip, timeOut),
+		CmdExpireIpAlarm)
+}

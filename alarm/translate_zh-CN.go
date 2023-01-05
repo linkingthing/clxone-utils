@@ -187,3 +187,13 @@ func genZombieIpMessageCh(ip string, timeOut int64) string {
 	buf.WriteString(" 小时")
 	return buf.String()
 }
+
+func genExpireIpMessageCh(ip string, timeOut int64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("在线过期地址 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 在线超过 ")
+	buf.WriteString(strconv.FormatInt(timeOut, 10))
+	buf.WriteString(" 小时")
+	return buf.String()
+}

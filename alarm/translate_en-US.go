@@ -178,3 +178,13 @@ func genZombieIpMessageEn(ip string, timeOut int64) string {
 	buf.WriteString(" hours")
 	return buf.String()
 }
+
+func genExpireIpMessageEn(ip string, timeOut int64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("expire ip ")
+	buf.WriteString(ip)
+	buf.WriteString(" online exceed ")
+	buf.WriteString(strconv.FormatInt(timeOut, 10))
+	buf.WriteString(" hours")
+	return buf.String()
+}
