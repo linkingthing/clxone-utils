@@ -1,26 +1,21 @@
 package util
 
 import (
-	"bytes"
-	"encoding/csv"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
 	"unicode"
-	"unicode/utf8"
 
 	"github.com/linkingthing/cement/slice"
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"golang.org/x/text/transform"
+	"github.com/xuri/excelize/v2"
 )
 
 const (
 	UTF8BOM            = "\xEF\xBB\xBF"
 	TimeFormat         = "2006-01-02 15:04:05"
 	CSVFileSuffix      = ".csv"
+	ExcelFileSuffix    = ".xlsx"
 	UploadDirectoryKey = "directory"
 	UploadFileKey      = "path"
 	UploadFileName     = "filename"
@@ -83,27 +78,19 @@ func WriteCSVFile(fileName string, tableHeader []string, contents [][]string) (s
 		return "", fmt.Errorf("empty file")
 	}
 
-	fileName = fileName + CSVFileSuffix
-	filepath := path.Join(FileRootPath, fileName)
-	file, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		return "", fmt.Errorf("create csv file %s failed: %s", filepath, err.Error())
+	file := excelize.NewFile()
+	for i, row := range append([][]string{tableHeader}, contents...) {
+		axis := fmt.Sprintf("A%d", i+1)
+		if err := file.SetSheetRow("Sheet1", axis, &row); err != nil {
+			return "", fmt.Errorf("write to excel file %s failed: %s", fileName, err.Error())
+		}
 	}
 
-	defer file.Close()
-	if _, err = file.WriteString(UTF8BOM); err != nil {
-		return "", err
-	}
-	w := csv.NewWriter(file)
-	if err := w.Write(tableHeader); err != nil {
-		return "", fmt.Errorf("write table header to csv file %s failed: %s", filepath, err.Error())
+	fileName = fileName + ExcelFileSuffix
+	if err := file.SaveAs(path.Join(FileRootPath, fileName)); err != nil {
+		return "", fmt.Errorf("write to excel file %s failed: %s", fileName, err.Error())
 	}
 
-	if err := w.WriteAll(contents); err != nil {
-		return "", fmt.Errorf("write data to csv file %s failed: %s", filepath, err.Error())
-	}
-
-	w.Flush()
 	return fileName, nil
 }
 
@@ -116,35 +103,37 @@ func ReadCSVFile(fileName string) ([][]string, error) {
 		return nil, fmt.Errorf("file name invalid with path traversal attacks")
 	}
 
-	file, err := os.Open(path.Join(FileRootPath, fileName))
+	file, err := excelize.OpenFile(path.Join(FileRootPath, fileName))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("open excel file %s failed: %v", fileName, err)
 	}
 	defer file.Close()
 
-	b, err := ioutil.ReadAll(file)
+	rows, err := file.GetRows(file.GetSheetName(0))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("read excel file %s failed: %v", fileName, err)
 	}
 
-	r := csv.NewReader(bytes.NewReader(b))
-	header, err := r.Read()
-	if err != nil && err != io.EOF {
-		return nil, err
-	} else if !utf8.ValidString(header[0]) {
-		r = csv.NewReader(transform.NewReader(bytes.NewReader(b), simplifiedchinese.GB18030.NewDecoder()))
-		if header, err = r.Read(); err != nil {
-			return nil, err
+	headerCellCount := 0
+	contents := make([][]string, 0, len(rows))
+	for _, row := range rows {
+		if len(row) == 0 {
+			continue
 		}
+
+		if headerCellCount == 0 {
+			// treat the first non-empty row as header
+			headerCellCount = len(row)
+		}
+
+		// ensure every row's length not bigger than the header's
+		if len(row) > headerCellCount {
+			row = row[:headerCellCount]
+		}
+		contents = append(contents, row)
 	}
 
-	contents, err := r.ReadAll()
-	if err != nil {
-		return nil, err
-	}
-
-	header[0] = strings.TrimLeft(header[0], UTF8BOM)
-	return append([][]string{header}, contents...), nil
+	return contents, nil
 }
 
 func IsSpaceField(field string) bool {
