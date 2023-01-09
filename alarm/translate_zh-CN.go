@@ -189,11 +189,19 @@ func genZombieIpMessageCh(ip string, timeOut int64) string {
 }
 
 func genExpireIpMessageCh(ip string, timeOut int64) string {
+	days := strconv.FormatInt(timeOut/24, 10)
+	hours := strconv.FormatInt(timeOut%24, 10)
 	buf := bytes.Buffer{}
-	buf.WriteString("在线过期地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线超过 ")
-	buf.WriteString(strconv.FormatInt(timeOut, 10))
-	buf.WriteString(" 小时")
+	buf.WriteString(" 在线状态超过")
+	if days != "0" {
+		buf.WriteString(days)
+		buf.WriteString("天")
+	}
+	if hours != "0" {
+		buf.WriteString(hours)
+		buf.WriteString("小时")
+	}
+	buf.WriteString("未更新，IP过期")
 	return buf.String()
 }
