@@ -13,23 +13,25 @@ import (
 
 const (
 	TimeFormat         = "2006-01-02 15:04:05"
-	ExcelFileSuffix    = ".xlsx"
+	FileSuffix         = ".xlsx"
 	UploadDirectoryKey = "directory"
 	UploadFileKey      = "path"
 	UploadFileName     = "filename"
 	FileResourceName   = "files"
 	IgnoreAuditLog     = "ignoreAuditLog"
+
+	sheetName = "Sheet1"
 )
 
 var FileRootPath = "/opt/files"
 
 const (
-	ActionNameImportExcel           = "import_excel"
-	ActionNameExportExcel           = "export_excel"
-	ActionNameExportExcelTemplate   = "export_excel_template"
-	ActionNameImportIPExcel         = "import_ip_excel"
-	ActionNameExportIPExcel         = "export_ip_excel"
-	ActionNameExportIPExcelTemplate = "export_ip_excel_template"
+	ActionNameImport           = "import"
+	ActionNameExport           = "export"
+	ActionNameExportTemplate   = "export_template"
+	ActionNameImportIP         = "import_ip"
+	ActionNameExportIP         = "export_ip"
+	ActionNameExportIPTemplate = "export_ip_template"
 )
 
 type ImportFile struct {
@@ -76,17 +78,20 @@ func WriteExcelFile(fileName string, tableHeader []string, contents [][]string) 
 		return "", fmt.Errorf("empty file")
 	}
 
+	fileName = fileName + FileSuffix
 	file := excelize.NewFile()
-	for i, row := range append([][]string{tableHeader}, contents...) {
-		axis := fmt.Sprintf("A%d", i+1)
-		if err := file.SetSheetRow("Sheet1", axis, &row); err != nil {
-			return "", fmt.Errorf("write to excel file %s failed: %s", fileName, err.Error())
+
+	if err := file.SetSheetRow(sheetName, "A1", &tableHeader); err != nil {
+		return "", fmt.Errorf("write header failed: %v", err)
+	}
+	for i := range contents {
+		if err := file.SetSheetRow(sheetName, fmt.Sprintf("A%d", i+2), &contents[i]); err != nil {
+			return "", fmt.Errorf("write row %d failed: %v", i, err)
 		}
 	}
 
-	fileName = fileName + ExcelFileSuffix
 	if err := file.SaveAs(path.Join(FileRootPath, fileName)); err != nil {
-		return "", fmt.Errorf("write to excel file %s failed: %s", fileName, err.Error())
+		return "", fmt.Errorf("save file %s failed: %v", fileName, err)
 	}
 
 	return fileName, nil
@@ -103,35 +108,16 @@ func ReadExcelFile(fileName string) ([][]string, error) {
 
 	file, err := excelize.OpenFile(path.Join(FileRootPath, fileName))
 	if err != nil {
-		return nil, fmt.Errorf("open excel file %s failed: %v", fileName, err)
+		return nil, fmt.Errorf("open file failed, only support format of XLSX: %v", err)
 	}
 	defer file.Close()
 
 	rows, err := file.GetRows(file.GetSheetName(0))
 	if err != nil {
-		return nil, fmt.Errorf("read excel file %s failed: %v", fileName, err)
+		return nil, fmt.Errorf("read file failed: %v", err)
 	}
 
-	headerCellCount := 0
-	contents := make([][]string, 0, len(rows))
-	for _, row := range rows {
-		if len(row) == 0 {
-			continue
-		}
-
-		if headerCellCount == 0 {
-			// treat the first non-empty row as header
-			headerCellCount = len(row)
-		}
-
-		// ensure every row's length not bigger than the header's
-		if len(row) > headerCellCount {
-			row = row[:headerCellCount]
-		}
-		contents = append(contents, row)
-	}
-
-	return contents, nil
+	return rows, nil
 }
 
 func IsSpaceField(field string) bool {
