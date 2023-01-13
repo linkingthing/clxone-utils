@@ -32,5 +32,5 @@ const (
 	CmdIpPortObsoletedAlarm = "ip_port_obsoleted_alarm"
 	CmdIpUnmanagedAlarm     = "ip_unmanaged_alarm"
 	CmdZombieIpAlarm        = "zombie_ip_alarm"
-	CmdExpireIpAlarm        = "expire_ip_alarm"
+	CmdOnlineExpiredIpAlarm = "online_expired_ip_alarm"
 )
