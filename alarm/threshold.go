@@ -172,9 +172,9 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    168,
 	},
-	pb.ThresholdName_expireIp: {
+	pb.ThresholdName_onlineExpiredIp: {
 		BaseThreshold: &pb.BaseThreshold{
-			Name:  pb.ThresholdName_expireIp,
+			Name:  pb.ThresholdName_onlineExpiredIp,
 			Level: pb.ThresholdLevel_major,
 			Type:  pb.ThresholdType_values,
 		},

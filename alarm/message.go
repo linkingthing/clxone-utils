@@ -242,7 +242,7 @@ func (a *Alarm) AddZombieIpAlarm(ip string, timeOut int64) error {
 }
 
 func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
-	threshold := a.GetThreshold(pb.ThresholdName_expireIp)
+	threshold := a.GetThreshold(pb.ThresholdName_onlineExpiredIp)
 	if threshold == nil {
 		return nil
 	}
@@ -250,5 +250,5 @@ func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
 	return a.sendAlarmToKafka(threshold,
 		genExpireIpMessageEn(ip, timeOut),
 		genExpireIpMessageCh(ip, timeOut),
-		CmdExpireIpAlarm)
+		CmdOnlineExpiredIpAlarm)
 }
