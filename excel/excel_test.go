@@ -40,3 +40,35 @@ func TestWriteAndReadExcel(t *testing.T) {
 		}
 	}
 }
+
+func TestParseTableFields(t *testing.T) {
+	header := []string{"h1", "h2", "h3"}
+	rows := [][]string{
+		{"x"},
+		{"hello", "world", "中文"},
+		{"a", "b&b&b", "c,d,e"},
+		{"l", "m:n::q"},
+		{"y1", "y2", "y3", "y4", "y5"},
+	}
+
+	result := [][]string{
+		{"x", "", ""},
+		{"hello", "world", "中文"},
+		{"a", "b&b&b", "c,d,e"},
+		{"l", "m:n::q", ""},
+		{"y1", "y2", "y3"},
+	}
+
+	for i, row := range rows {
+		fields, _, _ := ParseTableFields(row, header, nil)
+		if len(fields) != len(result[i]) {
+			t.Fatalf("row: %d, want: %q, got: %q", i, result[i], fields)
+		}
+		for j := 0; j < len(fields); j++ {
+			if fields[j] != result[i][j] {
+				t.Fatalf("file:%d:%d: want: %s, got: %s",
+					i, j, result[i][j], fields[j])
+			}
+		}
+	}
+}

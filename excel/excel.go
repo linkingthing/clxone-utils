@@ -156,7 +156,7 @@ func ParseTableFields(tableFields, tableHeaderFields, mandatoryFields []string) 
 	}
 
 	// ensure every row's length is same as the header's
-	for i := 0; i < len(tableHeaderFields)-len(tableFields); i++ {
+	for i := len(tableHeaderFields) - len(tableFields); i > 0; i-- {
 		tableFields = append(tableFields, "")
 	}
 
