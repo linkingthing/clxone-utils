@@ -155,10 +155,19 @@ func ParseTableFields(tableFields, tableHeaderFields, mandatoryFields []string) 
 		return nil, true, true
 	}
 
+	// ensure every row's length is same as the header's
+	for i := 0; i < len(tableHeaderFields)-len(tableFields); i++ {
+		tableFields = append(tableFields, "")
+	}
+
 	fields := make([]string, 0)
 	emptyFieldCnt := 0
 	missingMandatory := false
 	for i, field := range tableFields {
+		if i >= len(tableHeaderFields) {
+			break
+		}
+
 		if IsSpaceField(field) {
 			if slice.SliceIndex(mandatoryFields, tableHeaderFields[i]) != -1 {
 				missingMandatory = true
