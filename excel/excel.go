@@ -108,7 +108,7 @@ func ReadExcelFile(fileName string) ([][]string, error) {
 
 	file, err := excelize.OpenFile(path.Join(FileRootPath, fileName))
 	if err != nil {
-		return nil, fmt.Errorf("open file failed, only support format of XLSX: %v", err)
+		return nil, fmt.Errorf("open file failed, only support format of XLSX")
 	}
 	defer file.Close()
 
