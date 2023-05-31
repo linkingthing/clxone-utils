@@ -2,193 +2,226 @@ package excel
 
 import (
 	"fmt"
-	"os"
-	"path"
-	"strings"
-	"unicode"
-
-	"github.com/linkingthing/cement/slice"
 	"github.com/xuri/excelize/v2"
 )
 
 const (
-	TimeFormat         = "2006-01-02 15:04:05"
-	FileSuffix         = ".xlsx"
-	UploadDirectoryKey = "directory"
-	UploadFileKey      = "path"
-	UploadFileName     = "filename"
-	FileResourceName   = "files"
-	IgnoreAuditLog     = "ignoreAuditLog"
-
-	sheetName = "Sheet1"
+	DefaultSheet = "Sheet1"
 )
 
-var FileRootPath = "/opt/files"
+type OperateType uint8
 
 const (
-	ActionNameImport           = "import"
-	ActionNameExport           = "export"
-	ActionNameExportTemplate   = "export_template"
-	ActionNameImportIP         = "import_ip"
-	ActionNameExportIP         = "export_ip"
-	ActionNameExportIPTemplate = "export_ip_template"
+	OperateSetDropList OperateType = iota + 1
+	OperateMergeCell
 )
 
-type ImportFile struct {
-	Name string `json:"name"`
+func (ot OperateType) String() string {
+	switch ot {
+	case OperateSetDropList:
+		return "set-drop-list"
+	case OperateMergeCell:
+		return "merge-cell"
+	default:
+		return fmt.Sprintf("<%d>", ot)
+	}
 }
 
-type ExportFile struct {
-	Path string `json:"path"`
+type Coordinate struct {
+	ColNo int
+	RowNo int
 }
 
-type ImportResult struct {
-	Total      int        `json:"total"`
-	Success    int        `json:"success"`
-	Failed     int        `json:"failed"`
-	FailedFile string     `json:"failedFile"`
-	FailedData [][]string `json:"-"`
+func (cr Coordinate) ToCellName() (string, error) {
+	return excelize.CoordinatesToCellName(cr.ColNo, cr.RowNo)
 }
 
-func (result *ImportResult) InitData(total int) {
-	result.Total = total
-	result.Success = result.Total
-	result.Failed = 0
+type Range struct {
+	TopLeftAxis     Coordinate
+	BottomRightAxis Coordinate
 }
 
-func (result *ImportResult) AddFailedData(data []string) {
-	result.Failed++
-	result.Success--
-	result.FailedData = append(result.FailedData, data)
+func (r Range) ToCellRange() (topLeftCell, bottomRightCell string, err error) {
+	topLeftCell, err = r.TopLeftAxis.ToCellName()
+	if err != nil {
+		return
+	}
+
+	bottomRightCell, err = r.BottomRightAxis.ToCellName()
+	if err != nil {
+		return
+	}
+
+	return
 }
 
-func (result *ImportResult) FlushResult(fileName string, tableHeader []string) error {
-	if len(result.FailedData) > 0 {
-		failedFilePath, err := WriteExcelFile(fileName, tableHeader, result.FailedData)
+type Operate struct {
+	Range
+
+	Type  OperateType
+	Extra interface{}
+}
+
+type ExcelParser struct {
+	*excelize.File
+
+	create   bool
+	filepath string
+}
+
+func NewExcelParser(fileName string, create bool) (*ExcelParser, error) {
+	fpath, err := NormalizeFilepath(fileName)
+	if err != nil {
+		return nil, err
+	}
+
+	var fp *excelize.File
+	if create {
+		fp = excelize.NewFile()
+	} else {
+		fp, err = excelize.OpenFile(fpath)
 		if err != nil {
-			return err
-		}
-		result.FailedFile = failedFilePath
-	}
-	return nil
-}
-
-func WriteExcelFile(fileName string, tableHeader []string, contents [][]string) (string, error) {
-	if len(fileName) == 0 {
-		return "", fmt.Errorf("empty file")
-	}
-
-	fileName = fileName + FileSuffix
-	file := excelize.NewFile()
-
-	if err := file.SetSheetRow(sheetName, "A1", &tableHeader); err != nil {
-		return "", fmt.Errorf("write header failed: %v", err)
-	}
-	for i := range contents {
-		if err := file.SetSheetRow(sheetName, fmt.Sprintf("A%d", i+2), &contents[i]); err != nil {
-			return "", fmt.Errorf("write row %d failed: %v", i, err)
+			return nil, fmt.Errorf("open %s failed: only support format of XLSX", fileName)
 		}
 	}
 
-	if err := file.SaveAs(path.Join(FileRootPath, fileName)); err != nil {
-		return "", fmt.Errorf("save file %s failed: %v", fileName, err)
-	}
-
-	return fileName, nil
+	return &ExcelParser{
+		File:     fp,
+		create:   create,
+		filepath: fpath,
+	}, nil
 }
 
-func ReadExcelFile(fileName string) ([][]string, error) {
-	if len(fileName) == 0 {
-		return nil, fmt.Errorf("file is empty")
+func (parser *ExcelParser) Close() error {
+	if parser.create {
+		return parser.SaveAs(parser.filepath)
 	}
+	return parser.File.Close()
+}
 
-	if strings.Contains(fileName, "../") {
-		return nil, fmt.Errorf("file name invalid with path traversal attacks")
-	}
-
-	file, err := excelize.OpenFile(path.Join(FileRootPath, fileName))
+func (parser *ExcelParser) ReadAll(sheet string) ([][]string, error) {
+	rows, err := parser.GetRows(sheet)
 	if err != nil {
-		return nil, fmt.Errorf("open file failed, only support format of XLSX")
+		return nil, err
 	}
-	defer file.Close()
 
-	rows, err := file.GetRows(file.GetSheetName(0))
+	mergeCells, err := parser.GetMergeCells(sheet)
 	if err != nil {
-		return nil, fmt.Errorf("read file failed: %v", err)
+		return nil, err
+	}
+
+	for _, mc := range mergeCells {
+		startCol, startRow, err := excelize.CellNameToCoordinates(mc.GetStartAxis())
+		if err != nil {
+			return nil, err
+		}
+
+		endCol, endRow, err := excelize.CellNameToCoordinates(mc.GetEndAxis())
+		if err != nil {
+			return nil, err
+		}
+
+		value := mc.GetCellValue()
+		for i := startRow - 1; i < endRow && i < len(rows); i++ {
+			for j := startCol - 1; j < endCol && j < len(rows[i]); j++ {
+				rows[i][j] = value
+			}
+		}
 	}
 
 	return rows, nil
 }
 
-func IsSpaceField(field string) bool {
-	for _, r := range field {
-		if unicode.IsSpace(r) == false {
-			return false
-		}
-	}
-
-	return true
-}
-
-func ParseTableHeader(tableHeaderFields, validTableHeaderFields, mandatoryFields []string) ([]string, error) {
-	headerFields := make([]string, 0, len(tableHeaderFields))
-	mandatoryFieldCnt := 0
-	for _, field := range tableHeaderFields {
-		field = strings.Trim(field, "\r\n ")
-		if slice.SliceIndex(validTableHeaderFields, field) == -1 {
-			return nil, fmt.Errorf("the file table header field %s is invalid", field)
-		} else if slice.SliceIndex(mandatoryFields, field) != -1 {
-			mandatoryFieldCnt += 1
-		}
-		headerFields = append(headerFields, field)
-	}
-
-	if mandatoryFieldCnt != len(mandatoryFields) {
-		return nil, fmt.Errorf("the file must contains mandatory field %v", mandatoryFields)
-	}
-
-	return headerFields, nil
-}
-
-func ParseTableFields(tableFields, tableHeaderFields, mandatoryFields []string) ([]string, bool, bool) {
-	if len(tableFields) == 0 {
-		return nil, true, true
-	}
-
-	// ensure every row's length is same as the header's
-	for i := len(tableHeaderFields) - len(tableFields); i > 0; i-- {
-		tableFields = append(tableFields, "")
-	}
-
-	fields := make([]string, 0)
-	emptyFieldCnt := 0
-	missingMandatory := false
-	for i, field := range tableFields {
-		if i >= len(tableHeaderFields) {
-			break
-		}
-
-		if IsSpaceField(field) {
-			if slice.SliceIndex(mandatoryFields, tableHeaderFields[i]) != -1 {
-				missingMandatory = true
-			}
-			emptyFieldCnt += 1
-			fields = append(fields, "")
-		} else {
-			field = strings.TrimRight(field, "\r\n ")
-			fields = append(fields, field)
-		}
-	}
-
-	return fields, missingMandatory, emptyFieldCnt == len(tableFields)
-}
-
-func CreateUploadFolder(folderName string) error {
-	if _, err := os.Stat(path.Join(FileRootPath, folderName)); os.IsNotExist(err) {
-		if err := os.Mkdir(path.Join(FileRootPath, folderName), 0777); err != nil {
-			return fmt.Errorf("createFolder %s failed:%s ", folderName, err.Error())
+func (parser *ExcelParser) WriteAll(sheet string, contents [][]string) error {
+	for i := range contents {
+		if err := parser.SetSheetRow(sheet, fmt.Sprintf("A%d", i+1), &contents[i]); err != nil {
+			return fmt.Errorf("write row %d failed: %v", i+1, err)
 		}
 	}
 
 	return nil
+}
+
+func (parser *ExcelParser) ApplyOperates(sheet string, operates []Operate) (err error) {
+	for _, op := range operates {
+		switch op.Type {
+		case OperateSetDropList:
+			err = parser.setDropList(sheet, op)
+		case OperateMergeCell:
+			err = parser.mergeCells(sheet, op)
+		default:
+			err = fmt.Errorf("unsupported operate type of %s", op.Type)
+		}
+
+		if err != nil {
+			return
+		}
+	}
+	return
+}
+
+func (parser *ExcelParser) setDropList(sheet string, op Operate) error {
+	options, _ := op.Extra.([]string)
+	if len(options) == 0 {
+		return fmt.Errorf("invalid drop options: %v", op.Extra)
+	}
+
+	topLeftCell, bottomRightCell, err := op.ToCellRange()
+	if err != nil {
+		return err
+	}
+
+	dv := excelize.NewDataValidation(true)
+	dv.Sqref = fmt.Sprintf("%s:%s", topLeftCell, bottomRightCell)
+	dv.SetDropList(options)
+	return parser.AddDataValidation(sheet, dv)
+}
+
+func (parser *ExcelParser) mergeCells(sheet string, op Operate) error {
+	topLeftCell, bottomRightCell, err := op.ToCellRange()
+	if err != nil {
+		return err
+	}
+
+	return parser.MergeCell(sheet, topLeftCell, bottomRightCell)
+}
+
+func WriteExcelFile(fileName string, header []string, contents [][]string, ops ...Operate) (string, error) {
+	fileName = fileName + FileSuffixExcel
+	parser, err := NewExcelParser(fileName, true)
+	if err != nil {
+		return "", err
+	}
+
+	if err = parser.WriteAll(DefaultSheet, append([][]string{header}, contents...)); err != nil {
+		return "", err
+	}
+
+	if err = parser.ApplyOperates(DefaultSheet, ops); err != nil {
+		return "", err
+	}
+
+	return fileName, parser.Close()
+}
+
+func ReadExcelFile(fileName string, sheets ...string) ([][]string, error) {
+	parser, err := NewExcelParser(fileName, false)
+	if err != nil {
+		return nil, err
+	}
+	defer parser.Close()
+
+	if len(sheets) == 0 {
+		sheets = append(sheets, parser.GetSheetName(0))
+	}
+
+	var contents [][]string
+	for _, sheet := range sheets {
+		rows, err := parser.ReadAll(sheet)
+		if err != nil {
+			return contents, fmt.Errorf("read sheet %s error: %v", sheet, err)
+		}
+		contents = append(contents, rows...)
+	}
+	return contents, nil
 }

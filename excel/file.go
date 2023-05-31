@@ -1,14 +1,26 @@
 package excel
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/linkingthing/cement/log"
 )
+
+const (
+	UploadDirectoryKey = "directory"
+	UploadFileKey      = "path"
+	UploadFileName     = "filename"
+	FileResourceName   = "files"
+	IgnoreAuditLog     = "ignoreAuditLog"
+)
+
+var FileRootPath = "/opt/files"
 
 func RegisterFileApi(router *gin.Engine, apiPath string) {
 	router.StaticFS(path.Join(apiPath, FileResourceName), http.Dir(FileRootPath))
@@ -59,4 +71,26 @@ func RemoveFile(fileName string) error {
 	}
 
 	return nil
+}
+
+func CreateUploadFolder(folderName string) error {
+	if _, err := os.Stat(path.Join(FileRootPath, folderName)); os.IsNotExist(err) {
+		if err = os.Mkdir(path.Join(FileRootPath, folderName), 0777); err != nil {
+			return fmt.Errorf("createFolder %s failed:%s ", folderName, err.Error())
+		}
+	}
+
+	return nil
+}
+
+func NormalizeFilepath(fileName string) (string, error) {
+	if len(fileName) == 0 {
+		return "", fmt.Errorf("empty file")
+	}
+
+	if strings.Contains(fileName, "../") {
+		return "", fmt.Errorf("file name invalid with path traversal attacks")
+	}
+
+	return path.Join(FileRootPath, fileName), nil
 }
