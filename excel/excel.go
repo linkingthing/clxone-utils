@@ -186,6 +186,21 @@ func (parser *ExcelParser) mergeCells(sheet string, op Operate) error {
 	return parser.MergeCell(sheet, topLeftCell, bottomRightCell)
 }
 
+func MakeDropListOperate(opRange Range, dropList []string) Operate {
+	return Operate{
+		Range: opRange,
+		Type:  OperateSetDropList,
+		Extra: dropList,
+	}
+}
+
+func MakeMergeCellOperate(opRange Range) Operate {
+	return Operate{
+		Range: opRange,
+		Type:  OperateMergeCell,
+	}
+}
+
 func WriteExcelFile(fileName string, header []string, contents [][]string, ops ...Operate) (string, error) {
 	fileName = fileName + FileSuffixExcel
 	parser, err := NewExcelParser(fileName, true)

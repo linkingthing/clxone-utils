@@ -26,21 +26,14 @@ func TestWriteAndReadExcel(t *testing.T) {
 
 	dropList := []string{"h", "x", "a", "l", "aa"}
 	ops := []Operate{
-		{
-			Range: Range{
-				TopLeftAxis:     Coordinate{ColNo: 1, RowNo: 2},
-				BottomRightAxis: Coordinate{ColNo: 1, RowNo: len(contents)},
-			},
-			Type:  OperateSetDropList,
-			Extra: dropList,
-		},
-		{
-			Range: Range{
-				TopLeftAxis:     Coordinate{ColNo: 3, RowNo: 2},
-				BottomRightAxis: Coordinate{ColNo: 4, RowNo: 5},
-			},
-			Type: OperateMergeCell,
-		},
+		MakeDropListOperate(Range{
+			TopLeftAxis:     Coordinate{ColNo: 1, RowNo: 2},
+			BottomRightAxis: Coordinate{ColNo: 1, RowNo: len(contents)},
+		}, dropList),
+		MakeMergeCellOperate(Range{
+			TopLeftAxis:     Coordinate{ColNo: 3, RowNo: 2},
+			BottomRightAxis: Coordinate{ColNo: 4, RowNo: 5},
+		}),
 	}
 
 	fileName := fmt.Sprintf("_temp_%s", time.Now().Format("20060102150405"))
