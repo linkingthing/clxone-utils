@@ -252,3 +252,51 @@ func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
 		genExpireIpMessageCh(ip, timeOut),
 		CmdOnlineExpiredIpAlarm)
 }
+
+func (a *Alarm) AddUpWithExclusionIpAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_upWithExclusionIp)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genUpWithExclusionIpMessageEn(ip),
+		genUpWithExclusionIpMessageCh(ip),
+		CmdUpWithExclusionIpAlarm)
+}
+
+func (a *Alarm) AddUpMismatchMacIpAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_upMismatchMacIp)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genUpMismatchMacIpMessageEn(ip),
+		genUpMismatchMacIpMessageCh(ip),
+		CmdUpMismatchMacIpAlarm)
+}
+
+func (a *Alarm) AddUpNoLeaseIpAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_upNoLease)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genUpNoLeaseIpMessageEn(ip),
+		genUpNoLeaseIpMessageCh(ip),
+		CmdUpNoLeaseIpAlarm)
+}
+
+func (a *Alarm) AddUpReservedReUnallocatedIpAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_upReservedUnallocated)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genUpReservedUnallocatedIpMessageEn(ip),
+		genUpReservedUnallocatedIpMessageCh(ip),
+		CmdUpReservedUnallocatedIpAlarm)
+}

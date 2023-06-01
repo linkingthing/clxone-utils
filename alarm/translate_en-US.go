@@ -117,7 +117,7 @@ func genIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("ip ")
 	buf.WriteString(ip)
-	buf.WriteString(" conflict")
+	buf.WriteString(" is online without allocation information")
 	return buf.String()
 }
 
@@ -186,5 +186,36 @@ func genExpireIpMessageEn(ip string, timeOut int64) string {
 	buf.WriteString(" online exceed ")
 	buf.WriteString(strconv.FormatInt(timeOut, 10))
 	buf.WriteString(" hours")
+	return buf.String()
+}
+
+func genUpWithExclusionIpMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("online ip")
+	buf.WriteString(ip)
+	buf.WriteString(" is exclusion address")
+	return buf.String()
+}
+
+func genUpMismatchMacIpMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("the mac of ip")
+	buf.WriteString(ip)
+	buf.WriteString(" is different from collected mac")
+	return buf.String()
+}
+
+func genUpNoLeaseIpMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("no lease info for oline ip")
+	buf.WriteString(ip)
+	return buf.String()
+}
+
+func genUpReservedUnallocatedIpMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("reserved online ip")
+	buf.WriteString(ip)
+	buf.WriteString(" isn't registered")
 	return buf.String()
 }
