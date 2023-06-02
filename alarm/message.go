@@ -252,3 +252,75 @@ func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
 		genExpireIpMessageCh(ip, timeOut),
 		CmdOnlineExpiredIpAlarm)
 }
+
+func (a *Alarm) AddReservedIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_reservedIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genReservedIpConflictMessageEn(ip),
+		genReservedIpConflictMessageCh(ip),
+		CmdReservedIpConflictAlarm)
+}
+
+func (a *Alarm) AddDhcpExcludeIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpExcludeIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genDhcpExcludeIpConflictMessageEn(ip),
+		genDhcpExcludeIpConflictMessageCh(ip),
+		CmdDhcpExcludeIpConflictAlarm)
+}
+
+func (a *Alarm) AddDhcpDynamicMacIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpDynamicMacIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genDhcpDynamicMacIpConflictMessageEn(ip),
+		genDhcpDynamicMacIpConflictMessageCh(ip),
+		CmdDhcpDynamicMacIpConflictAlarm)
+}
+
+func (a *Alarm) AddDhcpReservationMacIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpReservationMacIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genDhcpReservationMacIpConflictMessageEn(ip),
+		genDhcpReservationMacIpConflictMessageCh(ip),
+		CmdDhcpReservationMacIpConflictAlarm)
+}
+
+func (a *Alarm) AddDhcpDynamicIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpDynamicIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genDhcpDynamicIpConflictMessageEn(ip),
+		genDhcpDynamicIpConflictMessageCh(ip),
+		CmdDhcpDynamicIpConflictAlarm)
+}
+
+func (a *Alarm) AddDhcpReservedIpConflictAlarm(ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpReservedIpConflict)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genDhcpReservedIpConflictMessageEn(ip),
+		genDhcpReservedIpConflictMessageCh(ip),
+		CmdDhcpReservedIpConflictAlarm)
+}
