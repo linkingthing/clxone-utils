@@ -117,7 +117,7 @@ func genIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("ip ")
 	buf.WriteString(ip)
-	buf.WriteString(" is online without allocation information")
+	buf.WriteString(" conflict")
 	return buf.String()
 }
 
@@ -189,7 +189,15 @@ func genExpireIpMessageEn(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genUpWithExclusionIpMessageEn(ip string) string {
+func genReservedIpConflictMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("ip ")
+	buf.WriteString(ip)
+	buf.WriteString(" is online without allocation information")
+	return buf.String()
+}
+
+func genDhcpExcludeIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("online ip")
 	buf.WriteString(ip)
@@ -197,7 +205,7 @@ func genUpWithExclusionIpMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genUpMismatchMacIpMessageEn(ip string) string {
+func genDhcpDynamicMacIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("the mac of ip")
 	buf.WriteString(ip)
@@ -205,14 +213,22 @@ func genUpMismatchMacIpMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genUpNoLeaseIpMessageEn(ip string) string {
+func genDhcpReservationMacIpConflictMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("the mac of ip")
+	buf.WriteString(ip)
+	buf.WriteString(" is different from collected mac")
+	return buf.String()
+}
+
+func genDhcpDynamicIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("no lease info for oline ip")
 	buf.WriteString(ip)
 	return buf.String()
 }
 
-func genUpReservedUnallocatedIpMessageEn(ip string) string {
+func genDhcpReservedIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("reserved online ip")
 	buf.WriteString(ip)

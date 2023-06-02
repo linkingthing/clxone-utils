@@ -126,7 +126,7 @@ func genIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("IP ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且无分配信息，判定地址冲突")
+	buf.WriteString("冲突")
 	return buf.String()
 }
 
@@ -206,7 +206,15 @@ func genExpireIpMessageCh(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genUpWithExclusionIpMessageCh(ip string) string {
+func genReservedIpConflictMessageCh(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("IP ")
+	buf.WriteString(ip)
+	buf.WriteString(" 在线且无分配信息，判定地址冲突")
+	return buf.String()
+}
+
+func genDhcpExcludeIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("地址 ")
 	buf.WriteString(ip)
@@ -214,7 +222,7 @@ func genUpWithExclusionIpMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genUpMismatchMacIpMessageCh(ip string) string {
+func genDhcpDynamicMacIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("DHCP地址 ")
 	buf.WriteString(ip)
@@ -222,7 +230,15 @@ func genUpMismatchMacIpMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genUpNoLeaseIpMessageCh(ip string) string {
+func genDhcpReservationMacIpConflictMessageCh(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("DHCP地址 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 的MAC与采集到的MAC不符，判定地址冲突")
+	return buf.String()
+}
+
+func genDhcpDynamicIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("地址 ")
 	buf.WriteString(ip)
@@ -230,7 +246,7 @@ func genUpNoLeaseIpMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genUpReservedUnallocatedIpMessageCh(ip string) string {
+func genDhcpReservedIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("保留地址 ")
 	buf.WriteString(ip)
