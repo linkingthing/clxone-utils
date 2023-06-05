@@ -182,4 +182,64 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    720,
 	},
+	pb.ThresholdName_reservedIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_reservedIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_dhcpDynamicIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpDynamicIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_dhcpDynamicMacIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpDynamicMacIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_dhcpReservationMacIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpReservationMacIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_dhcpReservedIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpReservedIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_dhcpReservationIpConflict: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpReservationIpConflict,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
 }
