@@ -17,15 +17,6 @@ func TestRegisterAlarm(t *testing.T) {
 			SendMail: false,
 			Enabled:  true,
 		},
-		{BaseThreshold: &pb.BaseThreshold{
-			Name:  pb.ThresholdName_ipConflict,
-			Level: pb.ThresholdLevel_critical,
-			Type:  pb.ThresholdType_trigger,
-		},
-			Value:    0,
-			SendMail: false,
-			Enabled:  false,
-		},
 		{
 			BaseThreshold: &pb.BaseThreshold{
 				Name:  pb.ThresholdName_ipMacObsoleted,
@@ -68,10 +59,6 @@ func TestRegisterAlarm(t *testing.T) {
 		return
 	}
 
-	if err := alarm.AddIpConflictAlarm("10.0.0.67"); err != nil {
-		t.Errorf(err.Error())
-		return
-	}
 	if err := alarm.AddSubnetConflictAlarm("20.0.0.0/24"); err != nil {
 		t.Errorf(err.Error())
 		return

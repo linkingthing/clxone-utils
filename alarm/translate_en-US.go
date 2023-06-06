@@ -113,14 +113,6 @@ func genServiceOfflineMessageEn(node, name string) string {
 	return buf.String()
 }
 
-func genIpConflictMessageEn(ip string) string {
-	buf := bytes.Buffer{}
-	buf.WriteString("ip ")
-	buf.WriteString(ip)
-	buf.WriteString(" conflict")
-	return buf.String()
-}
-
 func genSubnetConflictMessageEn(subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("subnet ")
