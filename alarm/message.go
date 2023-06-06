@@ -169,18 +169,6 @@ func (a *Alarm) AddServiceOfflineAlarm(node, name string) error {
 		CmdServiceOfflineAlarm)
 }
 
-func (a *Alarm) AddIpConflictAlarm(ip string) error {
-	threshold := a.GetThreshold(pb.ThresholdName_ipConflict)
-	if threshold == nil {
-		return nil
-	}
-
-	return a.sendAlarmToKafka(threshold,
-		genIpConflictMessageEn(ip),
-		genIpConflictMessageCh(ip),
-		CmdConflictIpAlarm)
-}
-
 func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_illegalDhcp)
 	if threshold == nil {

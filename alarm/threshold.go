@@ -102,16 +102,6 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
-	pb.ThresholdName_ipConflict: {
-		BaseThreshold: &pb.BaseThreshold{
-			Name:  pb.ThresholdName_ipConflict,
-			Level: pb.ThresholdLevel_critical,
-			Type:  pb.ThresholdType_trigger,
-		},
-		Enabled:  true,
-		SendMail: false,
-		Value:    0,
-	},
 	pb.ThresholdName_subnetConflict: {
 		BaseThreshold: &pb.BaseThreshold{
 			Name:  pb.ThresholdName_subnetConflict,
