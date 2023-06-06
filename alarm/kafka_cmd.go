@@ -38,5 +38,6 @@ const (
 	CmdDhcpDynamicMacIpConflictAlarm     = "dhcp_dynamic_mac_ip_conflict_alarm"
 	CmdDhcpReservationMacIpConflictAlarm = "dhcp_reservation_mac_ip_conflict_alarm"
 	CmdDhcpDynamicIpConflictAlarm        = "dhcp_dynamic_ip_conflict_alarm"
+	CmdDhcpReservationIpConflictAlarm    = "dhcp_reservation_ip_conflict_alarm"
 	CmdDhcpReservedIpConflictAlarm       = "dhcp_reserved_ip_conflict_alarm"
 )

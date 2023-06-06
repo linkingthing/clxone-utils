@@ -223,7 +223,14 @@ func genDhcpReservationMacIpConflictMessageEn(ip string) string {
 
 func genDhcpDynamicIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("no lease info for oline ip")
+	buf.WriteString("no lease info for online dynamic ip")
+	buf.WriteString(ip)
+	return buf.String()
+}
+
+func genDhcpReservationIpConflictMessageEn(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("no lease info for online reservation ip")
 	buf.WriteString(ip)
 	return buf.String()
 }

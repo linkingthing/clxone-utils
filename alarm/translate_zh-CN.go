@@ -240,7 +240,15 @@ func genDhcpReservationMacIpConflictMessageCh(ip string) string {
 
 func genDhcpDynamicIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("地址 ")
+	buf.WriteString("动态地址 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 在线且无DHCP租赁信息，判定地址冲突")
+	return buf.String()
+}
+
+func genDhcpReservationIpConflictMessageCh(ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("固定地址 ")
 	buf.WriteString(ip)
 	buf.WriteString(" 在线且无DHCP租赁信息，判定地址冲突")
 	return buf.String()
