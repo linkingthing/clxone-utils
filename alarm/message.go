@@ -224,8 +224,8 @@ func (a *Alarm) AddZombieIpAlarm(ip string, timeOut int64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genZombieIpMessageEn(ip, timeOut),
-		genZombieIpMessageCh(ip, timeOut),
+		GenZombieIpMessageEn(ip, timeOut),
+		GenZombieIpMessageCh(ip, timeOut),
 		CmdZombieIpAlarm)
 }
 
@@ -236,8 +236,8 @@ func (a *Alarm) AddExpireIpAlarm(ip string, timeOut int64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genExpireIpMessageEn(ip, timeOut),
-		genExpireIpMessageCh(ip, timeOut),
+		GenExpireIpMessageEn(ip, timeOut),
+		GenExpireIpMessageCh(ip, timeOut),
 		CmdOnlineExpiredIpAlarm)
 }
 
@@ -248,8 +248,8 @@ func (a *Alarm) AddReservedIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genReservedIpConflictMessageEn(ip),
-		genReservedIpConflictMessageCh(ip),
+		GenReservedIpConflictMessageEn(ip),
+		GenReservedIpConflictMessageCh(ip),
 		CmdReservedIpConflictAlarm)
 }
 
@@ -260,8 +260,8 @@ func (a *Alarm) AddDhcpExcludeIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpExcludeIpConflictMessageEn(ip),
-		genDhcpExcludeIpConflictMessageCh(ip),
+		GenDhcpExcludeIpConflictMessageEn(ip),
+		GenDhcpExcludeIpConflictMessageCh(ip),
 		CmdDhcpExcludeIpConflictAlarm)
 }
 
@@ -272,8 +272,8 @@ func (a *Alarm) AddDhcpDynamicMacIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpDynamicMacIpConflictMessageEn(ip),
-		genDhcpDynamicMacIpConflictMessageCh(ip),
+		GenDhcpDynamicMacIpConflictMessageEn(ip),
+		GenDhcpDynamicMacIpConflictMessageCh(ip),
 		CmdDhcpDynamicMacIpConflictAlarm)
 }
 
@@ -284,8 +284,8 @@ func (a *Alarm) AddDhcpReservationMacIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpReservationMacIpConflictMessageEn(ip),
-		genDhcpReservationMacIpConflictMessageCh(ip),
+		GenDhcpReservationMacIpConflictMessageEn(ip),
+		GenDhcpReservationMacIpConflictMessageCh(ip),
 		CmdDhcpReservationMacIpConflictAlarm)
 }
 
@@ -296,8 +296,8 @@ func (a *Alarm) AddDhcpDynamicIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpDynamicIpConflictMessageEn(ip),
-		genDhcpDynamicIpConflictMessageCh(ip),
+		GenDhcpDynamicIpConflictMessageEn(ip),
+		GenDhcpDynamicIpConflictMessageCh(ip),
 		CmdDhcpDynamicIpConflictAlarm)
 }
 
@@ -308,8 +308,8 @@ func (a *Alarm) AddDhcpReservationIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpReservationIpConflictMessageEn(ip),
-		genDhcpReservationIpConflictMessageCh(ip),
+		GenDhcpReservationIpConflictMessageEn(ip),
+		GenDhcpReservationIpConflictMessageCh(ip),
 		CmdDhcpReservationIpConflictAlarm)
 }
 
@@ -320,7 +320,7 @@ func (a *Alarm) AddDhcpReservedIpConflictAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genDhcpReservedIpConflictMessageEn(ip),
-		genDhcpReservedIpConflictMessageCh(ip),
+		GenDhcpReservedIpConflictMessageEn(ip),
+		GenDhcpReservedIpConflictMessageCh(ip),
 		CmdDhcpReservedIpConflictAlarm)
 }

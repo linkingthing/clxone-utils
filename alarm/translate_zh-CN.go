@@ -170,7 +170,7 @@ func zhCNUnManagedIpMsg(ip, subnet string) string {
 	return buf.String()
 }
 
-func genZombieIpMessageCh(ip string, timeOut int64) string {
+func GenZombieIpMessageCh(ip string, timeOut int64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("僵尸地址 ")
 	buf.WriteString(ip)
@@ -180,7 +180,7 @@ func genZombieIpMessageCh(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genExpireIpMessageCh(ip string, timeOut int64) string {
+func GenExpireIpMessageCh(ip string, timeOut int64) string {
 	days := strconv.FormatInt(timeOut/24, 10)
 	hours := strconv.FormatInt(timeOut%24, 10)
 	buf := bytes.Buffer{}
@@ -198,7 +198,7 @@ func genExpireIpMessageCh(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genReservedIpConflictMessageCh(ip string) string {
+func GenReservedIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("IP ")
 	buf.WriteString(ip)
@@ -206,7 +206,7 @@ func genReservedIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpExcludeIpConflictMessageCh(ip string) string {
+func GenDhcpExcludeIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("地址 ")
 	buf.WriteString(ip)
@@ -214,7 +214,7 @@ func genDhcpExcludeIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpDynamicMacIpConflictMessageCh(ip string) string {
+func GenDhcpDynamicMacIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("DHCP地址 ")
 	buf.WriteString(ip)
@@ -222,7 +222,7 @@ func genDhcpDynamicMacIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpReservationMacIpConflictMessageCh(ip string) string {
+func GenDhcpReservationMacIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("DHCP地址 ")
 	buf.WriteString(ip)
@@ -230,7 +230,7 @@ func genDhcpReservationMacIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpDynamicIpConflictMessageCh(ip string) string {
+func GenDhcpDynamicIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("动态地址 ")
 	buf.WriteString(ip)
@@ -238,7 +238,7 @@ func genDhcpDynamicIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpReservationIpConflictMessageCh(ip string) string {
+func GenDhcpReservationIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("固定地址 ")
 	buf.WriteString(ip)
@@ -246,7 +246,7 @@ func genDhcpReservationIpConflictMessageCh(ip string) string {
 	return buf.String()
 }
 
-func genDhcpReservedIpConflictMessageCh(ip string) string {
+func GenDhcpReservedIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("保留地址 ")
 	buf.WriteString(ip)

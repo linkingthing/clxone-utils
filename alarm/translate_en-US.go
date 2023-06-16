@@ -161,7 +161,7 @@ func enUSUnManagedIpMsg(ip, subnet string) string {
 	return buf.String()
 }
 
-func genZombieIpMessageEn(ip string, timeOut int64) string {
+func GenZombieIpMessageEn(ip string, timeOut int64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("zombie ip ")
 	buf.WriteString(ip)
@@ -171,7 +171,7 @@ func genZombieIpMessageEn(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genExpireIpMessageEn(ip string, timeOut int64) string {
+func GenExpireIpMessageEn(ip string, timeOut int64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("online ip ")
 	buf.WriteString(ip)
@@ -181,7 +181,7 @@ func genExpireIpMessageEn(ip string, timeOut int64) string {
 	return buf.String()
 }
 
-func genReservedIpConflictMessageEn(ip string) string {
+func GenReservedIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("ip ")
 	buf.WriteString(ip)
@@ -189,7 +189,7 @@ func genReservedIpConflictMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genDhcpExcludeIpConflictMessageEn(ip string) string {
+func GenDhcpExcludeIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("online ip")
 	buf.WriteString(ip)
@@ -197,7 +197,7 @@ func genDhcpExcludeIpConflictMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genDhcpDynamicMacIpConflictMessageEn(ip string) string {
+func GenDhcpDynamicMacIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("the mac of ip")
 	buf.WriteString(ip)
@@ -205,7 +205,7 @@ func genDhcpDynamicMacIpConflictMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genDhcpReservationMacIpConflictMessageEn(ip string) string {
+func GenDhcpReservationMacIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("the mac of ip")
 	buf.WriteString(ip)
@@ -213,21 +213,21 @@ func genDhcpReservationMacIpConflictMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genDhcpDynamicIpConflictMessageEn(ip string) string {
+func GenDhcpDynamicIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("no lease info for online dynamic ip")
 	buf.WriteString(ip)
 	return buf.String()
 }
 
-func genDhcpReservationIpConflictMessageEn(ip string) string {
+func GenDhcpReservationIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("no lease info for online reservation ip")
 	buf.WriteString(ip)
 	return buf.String()
 }
 
-func genDhcpReservedIpConflictMessageEn(ip string) string {
+func GenDhcpReservedIpConflictMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("reserved online ip")
 	buf.WriteString(ip)
