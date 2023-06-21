@@ -200,56 +200,64 @@ func GenExpireIpMessageCh(ip string, timeOut int64) string {
 
 func GenReservedIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("IP ")
+	buf.WriteString("静态子网中预留的IP地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且无分配信息，判定地址冲突")
+	buf.WriteString(" ，采集到该IP地址在线，产生冲突告警")
 	return buf.String()
 }
 
 func GenDhcpExcludeIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("地址 ")
+	buf.WriteString("DHCP子网中的排除地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且地址为排除地址，判定地址冲突")
+	buf.WriteString(" ，采集到该IP地址在线，产生IP冲突告警")
 	return buf.String()
 }
 
-func GenDhcpDynamicMacIpConflictMessageCh(ip string) string {
+func GenDhcpDynamicMacIpConflictMessageCh(ip, ipMac, collectMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("DHCP地址 ")
+	buf.WriteString("DHCP租赁地址中动态地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 的MAC与采集到的MAC不符，判定地址冲突")
+	buf.WriteString(" 的MAC:")
+	buf.WriteString(ipMac)
+	buf.WriteString(" 与采集的MAC:")
+	buf.WriteString(collectMac)
+	buf.WriteString(" 不匹配，产生IP冲突告警")
 	return buf.String()
 }
 
-func GenDhcpReservationMacIpConflictMessageCh(ip string) string {
+func GenDhcpReservationMacIpConflictMessageCh(ip, ipMac, collectMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("DHCP地址 ")
+	buf.WriteString("DHCP租赁地址中固定地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 的MAC与采集到的MAC不符，判定地址冲突")
+	buf.WriteString(" 的MAC:")
+	buf.WriteString(ipMac)
+	buf.WriteString(" 与采集的MAC:")
+	buf.WriteString(collectMac)
+	buf.WriteString(" 不匹配，产生IP冲突告警")
 	return buf.String()
 }
 
 func GenDhcpDynamicIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("动态地址 ")
+	buf.WriteString("动态IP地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且无DHCP租赁信息，判定地址冲突")
+	buf.WriteString(" 无租赁，但采集到该IP在线，产生IP冲突告警")
 	return buf.String()
 }
 
 func GenDhcpReservationIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("固定地址 ")
+	buf.WriteString("固定IP地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且无DHCP租赁信息，判定地址冲突")
+	buf.WriteString(" 无租赁，但采集到该IP在线，产生IP冲突告警")
 	return buf.String()
 }
 
 func GenDhcpReservedIpConflictMessageCh(ip string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("保留地址 ")
+	buf.WriteString("DHCP保留地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 在线且未登记，判定地址冲突")
+	buf.WriteString(" 未登记，但采集到该IP在线，产生IP冲突告警")
 	return buf.String()
 }

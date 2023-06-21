@@ -265,27 +265,27 @@ func (a *Alarm) AddDhcpExcludeIpConflictAlarm(ip string) error {
 		CmdDhcpExcludeIpConflictAlarm)
 }
 
-func (a *Alarm) AddDhcpDynamicMacIpConflictAlarm(ip string) error {
+func (a *Alarm) AddDhcpDynamicMacIpConflictAlarm(ip, ipMac, collectMac string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_dhcpDynamicMacIpConflict)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		GenDhcpDynamicMacIpConflictMessageEn(ip),
-		GenDhcpDynamicMacIpConflictMessageCh(ip),
+		GenDhcpDynamicMacIpConflictMessageEn(ip, ipMac, collectMac),
+		GenDhcpDynamicMacIpConflictMessageCh(ip, ipMac, collectMac),
 		CmdDhcpDynamicMacIpConflictAlarm)
 }
 
-func (a *Alarm) AddDhcpReservationMacIpConflictAlarm(ip string) error {
+func (a *Alarm) AddDhcpReservationMacIpConflictAlarm(ip, ipMac, collectMac string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_dhcpReservationMacIpConflict)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		GenDhcpReservationMacIpConflictMessageEn(ip),
-		GenDhcpReservationMacIpConflictMessageCh(ip),
+		GenDhcpReservationMacIpConflictMessageEn(ip, ipMac, collectMac),
+		GenDhcpReservationMacIpConflictMessageCh(ip, ipMac, collectMac),
 		CmdDhcpReservationMacIpConflictAlarm)
 }
 

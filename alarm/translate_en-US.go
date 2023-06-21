@@ -197,19 +197,25 @@ func GenDhcpExcludeIpConflictMessageEn(ip string) string {
 	return buf.String()
 }
 
-func GenDhcpDynamicMacIpConflictMessageEn(ip string) string {
+func GenDhcpDynamicMacIpConflictMessageEn(ip, ipMac, collectMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("the mac of ip")
+	buf.WriteString("the mac ")
+	buf.WriteString(ipMac)
+	buf.WriteString(" of ip ")
 	buf.WriteString(ip)
-	buf.WriteString(" is different from collected mac")
+	buf.WriteString(" is different from collected mac ")
+	buf.WriteString(collectMac)
 	return buf.String()
 }
 
-func GenDhcpReservationMacIpConflictMessageEn(ip string) string {
+func GenDhcpReservationMacIpConflictMessageEn(ip, ipMac, collectMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("the mac of ip")
+	buf.WriteString("the mac ")
+	buf.WriteString(ipMac)
+	buf.WriteString(" of ip ")
 	buf.WriteString(ip)
-	buf.WriteString(" is different from collected mac")
+	buf.WriteString(" is different from collected mac ")
+	buf.WriteString(collectMac)
 	return buf.String()
 }
 
