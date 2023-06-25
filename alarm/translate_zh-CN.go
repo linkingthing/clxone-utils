@@ -218,11 +218,11 @@ func GenDhcpDynamicMacIpConflictMessageCh(ip, ipMac, collectMac string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("DHCP租赁地址中动态地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 的MAC:")
+	buf.WriteString(" 的MAC[")
 	buf.WriteString(ipMac)
-	buf.WriteString(" 与采集的MAC:")
+	buf.WriteString("] 与采集的MAC[")
 	buf.WriteString(collectMac)
-	buf.WriteString(" 不匹配，产生IP冲突告警")
+	buf.WriteString("] 不匹配，产生IP冲突告警")
 	return buf.String()
 }
 
@@ -230,11 +230,11 @@ func GenDhcpReservationMacIpConflictMessageCh(ip, ipMac, collectMac string) stri
 	buf := bytes.Buffer{}
 	buf.WriteString("DHCP租赁地址中固定地址 ")
 	buf.WriteString(ip)
-	buf.WriteString(" 的MAC:")
+	buf.WriteString(" 的MAC[")
 	buf.WriteString(ipMac)
-	buf.WriteString(" 与采集的MAC:")
+	buf.WriteString("] 与采集的MAC[")
 	buf.WriteString(collectMac)
-	buf.WriteString(" 不匹配，产生IP冲突告警")
+	buf.WriteString("] 不匹配，产生IP冲突告警")
 	return buf.String()
 }
 
