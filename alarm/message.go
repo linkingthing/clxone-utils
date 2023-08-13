@@ -324,3 +324,27 @@ func (a *Alarm) AddDhcpReservedIpConflictAlarm(ip string) error {
 		GenDhcpReservedIpConflictMessageCh(ip),
 		CmdDhcpReservedIpConflictAlarm)
 }
+
+func (a *Alarm) AddAddressAuditAlarm(english, chinese string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_addressAudit)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		english,
+		chinese,
+		CmdAddressAuditAlarm)
+}
+
+func (a *Alarm) AddAsAuditAlarm(english, chinese string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_asAudit)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		english,
+		chinese,
+		CmdAsAuditAlarm)
+}

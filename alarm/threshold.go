@@ -242,4 +242,24 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: true,
 		Value:    0,
 	},
+	pb.ThresholdName_addressAudit: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_addressAudit,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_asAudit: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_asAudit,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
 }

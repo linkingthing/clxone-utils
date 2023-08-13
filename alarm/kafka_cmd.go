@@ -40,4 +40,6 @@ const (
 	CmdDhcpDynamicIpConflictAlarm        = "dhcp_dynamic_ip_conflict_alarm"
 	CmdDhcpReservationIpConflictAlarm    = "dhcp_reservation_ip_conflict_alarm"
 	CmdDhcpReservedIpConflictAlarm       = "dhcp_reserved_ip_conflict_alarm"
+	CmdAddressAuditAlarm                 = "address_audit_alarm"
+	CmdAsAuditAlarm                      = "as_audit_alarm"
 )
