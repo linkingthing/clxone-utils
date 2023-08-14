@@ -348,3 +348,17 @@ func (a *Alarm) AddAsAuditAlarm(english, chinese string) error {
 		chinese,
 		CmdAsAuditAlarm)
 }
+
+func (a *Alarm) AddFlowAbnormalAlarm(ip string, value uint64) error {
+	threshold := a.GetThreshold(pb.ThresholdName_flowAbnormal)
+	if threshold == nil {
+		return nil
+	} else if value < threshold.Value {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		genFlowAbnormalMessageEn(ip, value, threshold.Value),
+		genFlowAbnormalMessageCh(ip, value, threshold.Value),
+		CmdFlowAbnormalAlarm)
+}

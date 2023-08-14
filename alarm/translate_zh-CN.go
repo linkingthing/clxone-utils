@@ -261,3 +261,15 @@ func GenDhcpReservedIpConflictMessageCh(ip string) string {
 	buf.WriteString(" 未登记，但采集到该IP在线，产生IP冲突告警")
 	return buf.String()
 }
+
+func genFlowAbnormalMessageCh(ip string, value, limit uint64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("节点")
+	buf.WriteString(ip)
+	buf.WriteString("网络流量异常，每秒网络流量")
+	buf.WriteString(strconv.FormatUint(value, 10))
+	buf.WriteString("M，超过")
+	buf.WriteString(strconv.FormatUint(limit, 10))
+	buf.WriteString("M")
+	return buf.String()
+}

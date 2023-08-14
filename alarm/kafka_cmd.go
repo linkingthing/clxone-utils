@@ -42,4 +42,5 @@ const (
 	CmdDhcpReservedIpConflictAlarm       = "dhcp_reserved_ip_conflict_alarm"
 	CmdAddressAuditAlarm                 = "address_audit_alarm"
 	CmdAsAuditAlarm                      = "as_audit_alarm"
+	CmdFlowAbnormalAlarm                 = "flow_abnormal_alarm"
 )

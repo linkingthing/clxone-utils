@@ -242,3 +242,15 @@ func GenDhcpReservedIpConflictMessageEn(ip string) string {
 	buf.WriteString(" isn't registered")
 	return buf.String()
 }
+
+func genFlowAbnormalMessageEn(ip string, value, limit uint64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("node ")
+	buf.WriteString(ip)
+	buf.WriteString("network flow arrives ")
+	buf.WriteString(strconv.FormatUint(value, 10))
+	buf.WriteString("MB/s, and exceeds ")
+	buf.WriteString(strconv.FormatUint(limit, 10))
+	buf.WriteString("MB/s")
+	return buf.String()
+}

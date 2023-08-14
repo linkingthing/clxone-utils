@@ -262,4 +262,14 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: true,
 		Value:    0,
 	},
+	pb.ThresholdName_flowAbnormal: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_flowAbnormal,
+			Level: pb.ThresholdLevel_critical,
+			Type:  pb.ThresholdType_values,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
 }
