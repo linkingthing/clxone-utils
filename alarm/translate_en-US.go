@@ -130,20 +130,25 @@ func genIllegalDhcpMessageEn(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageEn(mac, obsolete, current string) string {
+func genIpMacObsoletedMessageEn(device, ip, oldMac, newMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString(mac)
-	buf.WriteString(" address changed from ")
-	buf.WriteString(obsolete)
-	buf.WriteString(" to ")
-	buf.WriteString(current)
+	buf.WriteString("the mac bound onto ip ")
+	buf.WriteString(ip)
+	buf.WriteString(" for device ")
+	buf.WriteString(device)
+	buf.WriteString(" from ")
+	buf.WriteString(oldMac)
+	buf.WriteString(" changed to ")
+	buf.WriteString(newMac)
 	return buf.String()
 }
 
-func genIpPortObsoletedMessageEn(port int, obsolete, current string) string {
+func genIpPortObsoletedMessageEn(equip, port, obsolete, current string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("the IP of the port:")
-	buf.WriteString(strconv.FormatInt(int64(port), 10))
+	buf.WriteString("the IP of the port ")
+	buf.WriteString(port)
+	buf.WriteString(" on equipment ")
+	buf.WriteString(equip)
 	buf.WriteString(" is changed from ")
 	buf.WriteString(obsolete)
 	buf.WriteString(" to ")

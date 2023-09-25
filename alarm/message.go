@@ -181,27 +181,27 @@ func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
 		CmdIllegalDhcpAlarm)
 }
 
-func (a *Alarm) AddIpMacObsoletedAlarm(mac, obsolete, current string) error {
+func (a *Alarm) AddIpMacObsoletedAlarm(device, ip, oldMac, newMac string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_ipMacObsoleted)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genIpMacObsoletedMessageEn(mac, obsolete, current),
-		genIpMacObsoletedMessageCh(mac, obsolete, current),
+		genIpMacObsoletedMessageEn(device, ip, oldMac, newMac),
+		genIpMacObsoletedMessageCh(device, ip, oldMac, newMac),
 		CmdIpMacObsoletedAlarm)
 }
 
-func (a *Alarm) AddIpPortObsoletedAlarm(port int, obsolete, current string) error {
+func (a *Alarm) AddIpPortObsoletedAlarm(equip, port, obsolete, current string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_ipPortObsoleted)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genIpPortObsoletedMessageEn(port, obsolete, current),
-		genIpPortObsoletedMessageCh(port, obsolete, current),
+		genIpPortObsoletedMessageEn(equip, port, obsolete, current),
+		genIpPortObsoletedMessageCh(equip, port, obsolete, current),
 		CmdIpPortObsoletedAlarm)
 }
 
