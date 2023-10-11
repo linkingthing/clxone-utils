@@ -272,4 +272,24 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: true,
 		Value:    0,
 	},
+	pb.ThresholdName_loginAbnormal: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_loginAbnormal,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
+	pb.ThresholdName_taskFailed: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_taskFailed,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: true,
+		Value:    0,
+	},
 }

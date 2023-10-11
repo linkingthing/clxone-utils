@@ -43,4 +43,6 @@ const (
 	CmdAddressAuditAlarm                 = "address_audit_alarm"
 	CmdAsAuditAlarm                      = "as_audit_alarm"
 	CmdFlowAbnormalAlarm                 = "flow_abnormal_alarm"
+	CmdLoginAbnormalAlarm                = "login_abnormal_alarm"
+	CmdTaskFailedAlarm                   = "task_failed_alarm"
 )

@@ -2,6 +2,7 @@ package alarm
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/golang/protobuf/proto"
 	kg "github.com/segmentio/kafka-go"
@@ -361,4 +362,28 @@ func (a *Alarm) AddFlowAbnormalAlarm(ip string, value uint64) error {
 		genFlowAbnormalMessageEn(ip, value, threshold.Value),
 		genFlowAbnormalMessageCh(ip, value, threshold.Value),
 		CmdFlowAbnormalAlarm)
+}
+
+func (a *Alarm) AddLoginAbnormalAlarm(account string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_loginAbnormal)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		fmt.Sprintf("account %s login failed too much", account),
+		fmt.Sprintf("账号%s，登录次数过多", account),
+		CmdLoginAbnormalAlarm)
+}
+
+func (a *Alarm) AddTaskFailedAlarm(task string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_taskFailed)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		fmt.Sprintf("task %s collects data failed", task),
+		fmt.Sprintf("任务名称：%s，设备采集任务失败", task),
+		CmdTaskFailedAlarm)
 }
