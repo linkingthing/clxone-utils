@@ -139,23 +139,28 @@ func genIllegalDhcpMessageCh(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageCh(mac, obsolete, current string) string {
+func genIpMacObsoletedMessageCh(device, ip, oldMac, newMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString(mac)
-	buf.WriteString("的IP地址由 ")
-	buf.WriteString(obsolete)
-	buf.WriteString("变更为 ")
-	buf.WriteString(current)
+	buf.WriteString("终端")
+	buf.WriteString(device)
+	buf.WriteString("的IP")
+	buf.WriteString(ip)
+	buf.WriteString("上所绑定的MAC从")
+	buf.WriteString(oldMac)
+	buf.WriteString("变更为")
+	buf.WriteString(newMac)
 	return buf.String()
 }
 
-func genIpPortObsoletedMessageCh(port int, obsolete, current string) string {
+func genIpPortObsoletedMessageCh(equip, port, obsolete, current string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("端口 ")
-	buf.WriteString(strconv.FormatInt(int64(port), 10))
-	buf.WriteString(" 的IP由 ")
+	buf.WriteString("设备")
+	buf.WriteString(equip)
+	buf.WriteString("的端口")
+	buf.WriteString(port)
+	buf.WriteString("上的IP由")
 	buf.WriteString(obsolete)
-	buf.WriteString("变更为 ")
+	buf.WriteString("变更为")
 	buf.WriteString(current)
 	return buf.String()
 }

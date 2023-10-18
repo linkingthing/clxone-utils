@@ -67,7 +67,7 @@ func TestRegisterAlarm(t *testing.T) {
 		t.Errorf(err.Error())
 		return
 	}
-	if err := alarm.AddIpPortObsoletedAlarm(101, "11.0.0.1", "11.0.0.2"); err != nil {
+	if err := alarm.AddIpPortObsoletedAlarm("x", "11.0.0.1", "11.0.0.2"); err != nil {
 		t.Errorf(err.Error())
 		return
 	}
