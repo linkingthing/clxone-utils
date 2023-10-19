@@ -246,6 +246,21 @@ func (m *RStoreMocker) CopyFromEx(typ restdb.ResourceType, columns []string, val
 	}
 }
 
+func (m *RStoreMocker) CopyFrom(typ restdb.ResourceType, values [][]interface{}) (int64, error) {
+	name := getMethodName()
+	if msg, err := m.Mocker.AssertExpectation(name); err == nil {
+		if msg.expectType == expectTypeInt64 {
+			return msg.result.(int64), msg.err
+		} else if msg.expectType == expectTypeError {
+			return 0, msg.err
+		}
+
+		return 0, fmt.Errorf("not found expectation return type:%s in %s", msg.expectType, name)
+	} else {
+		return 0, err
+	}
+}
+
 func getMethodName() string {
 	pc, _, _, ok := runtime.Caller(1)
 	if !ok {

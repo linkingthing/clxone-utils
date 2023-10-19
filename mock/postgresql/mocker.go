@@ -47,6 +47,7 @@ const (
 	ExpectMethodFillEx     ExpectMethod = "FillEx"
 	ExpectMethodExec       ExpectMethod = "Exec"
 	ExpectMethodCopyFromEx ExpectMethod = "CopyFromEx"
+	ExpectMethodCopyFrom 	ExpectMethod = "CopyFrom"
 	ExpectMethodBegin      ExpectMethod = "Begin"
 	ExpectMethodCommit     ExpectMethod = "Commit"
 	ExpectMethodRollback   ExpectMethod = "Rollback"
