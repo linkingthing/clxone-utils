@@ -46,8 +46,8 @@ func (a *Alarm) AddCpuUsageAlarm(ip string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genCpuUsageMessageEn(ip, value, threshold.Value),
-		genCpuUsageMessageCh(ip, value, threshold.Value),
+		GenCpuUsageMessageEn(ip, value, threshold.Value),
+		GenCpuUsageMessageCh(ip, value, threshold.Value),
 		CmdCpuUsageAlarm)
 }
 
@@ -60,8 +60,8 @@ func (a *Alarm) AddMemoryUsageAlarm(ip string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genMemoryUsageMessageEn(ip, value, threshold.Value),
-		genMemoryUsageMessageCh(ip, value, threshold.Value),
+		GenMemoryUsageMessageEn(ip, value, threshold.Value),
+		GenMemoryUsageMessageCh(ip, value, threshold.Value),
 		CmdMemoryUsageAlarm)
 }
 
@@ -74,8 +74,8 @@ func (a *Alarm) AddStorageUsageAlarm(ip string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genStoreUsageMessageEn(ip, value, threshold.Value),
-		genStoreUsageMessageCh(ip, value, threshold.Value),
+		GenStoreUsageMessageEn(ip, value, threshold.Value),
+		GenStoreUsageMessageCh(ip, value, threshold.Value),
 		CmdStorageUsageAlarm)
 }
 
@@ -88,8 +88,8 @@ func (a *Alarm) AddSubnetRadioAlarm(ip, subnet string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genSubnetRadioMessageEn(ip, subnet, value, threshold.Value),
-		genSubnetRadioMessageCh(ip, subnet, value, threshold.Value),
+		GenSubnetRadioMessageEn(ip, subnet, value, threshold.Value),
+		GenSubnetRadioMessageCh(ip, subnet, value, threshold.Value),
 		CmdSubnetRadioAlarm)
 }
 
@@ -100,8 +100,8 @@ func (a *Alarm) AddSubnetConflictAlarm(name string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genSubnetConflictMessageEn(name),
-		genSubnetConflictMessageCh(name),
+		GenSubnetConflictMessageEn(name),
+		GenSubnetConflictMessageCh(name),
 		CmdConflictSubnetAlarm)
 }
 
@@ -114,8 +114,8 @@ func (a *Alarm) AddQPSAlarm(ip string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genQpsMessageEn(ip, value, threshold.Value),
-		genQpsMessageCh(ip, value, threshold.Value),
+		GenQpsMessageEn(ip, value, threshold.Value),
+		GenQpsMessageCh(ip, value, threshold.Value),
 		CmdQpsAlarm)
 }
 
@@ -128,8 +128,8 @@ func (a *Alarm) AddLPSAlarm(ip string, value uint64) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genLpsMessageEn(ip, value, threshold.Value),
-		genLpsMessageCh(ip, value, threshold.Value),
+		GenLpsMessageEn(ip, value, threshold.Value),
+		GenLpsMessageCh(ip, value, threshold.Value),
 		CmdLpsAlarm)
 }
 
@@ -140,8 +140,8 @@ func (a *Alarm) AddHaTriggerAlarm(cmd, role, master, slave string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genHaTriggerMessageEn(cmd, role, master, slave),
-		genHaTriggerMessageCh(cmd, role, master, slave),
+		GenHaTriggerMessageEn(cmd, role, master, slave),
+		GenHaTriggerMessageCh(cmd, role, master, slave),
 		CmdHaTriggerAlarm)
 }
 
@@ -152,8 +152,8 @@ func (a *Alarm) AddNodeOfflineAlarm(ip string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genNodeOfflineMessageEn(ip),
-		genNodeOfflineMessageCh(ip),
+		GenNodeOfflineMessageEn(ip),
+		GenNodeOfflineMessageCh(ip),
 		CmdNodeOfflineAlarm)
 }
 
@@ -164,8 +164,8 @@ func (a *Alarm) AddServiceOfflineAlarm(node, name string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genServiceOfflineMessageEn(node, name),
-		genServiceOfflineMessageCh(node, name),
+		GenServiceOfflineMessageEn(node, name),
+		GenServiceOfflineMessageCh(node, name),
 		CmdServiceOfflineAlarm)
 }
 
@@ -176,8 +176,8 @@ func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genIllegalDhcpMessageEn(ip, mac),
-		genIllegalDhcpMessageCh(ip, mac),
+		GenIllegalDhcpMessageEn(ip, mac),
+		GenIllegalDhcpMessageCh(ip, mac),
 		CmdIllegalDhcpAlarm)
 }
 
@@ -188,8 +188,8 @@ func (a *Alarm) AddIpMacObsoletedAlarm(device, ip, oldMac, newMac string) error 
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genIpMacObsoletedMessageEn(device, ip, oldMac, newMac),
-		genIpMacObsoletedMessageCh(device, ip, oldMac, newMac),
+		GenIpMacObsoletedMessageEn(device, ip, oldMac, newMac),
+		GenIpMacObsoletedMessageCh(device, ip, oldMac, newMac),
 		CmdIpMacObsoletedAlarm)
 }
 
@@ -200,8 +200,8 @@ func (a *Alarm) AddIpPortObsoletedAlarm(equip, port, obsolete, current string) e
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		genIpPortObsoletedMessageEn(equip, port, obsolete, current),
-		genIpPortObsoletedMessageCh(equip, port, obsolete, current),
+		GenIpPortObsoletedMessageEn(equip, port, obsolete, current),
+		GenIpPortObsoletedMessageCh(equip, port, obsolete, current),
 		CmdIpPortObsoletedAlarm)
 }
 
@@ -212,8 +212,8 @@ func (a *Alarm) AddUnmanagedIpAlarm(ip, subnet string) error {
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		enUSUnManagedIpMsg(ip, subnet),
-		zhCNUnManagedIpMsg(ip, subnet),
+		GenUnManagedIpMsg(ip, subnet),
+		GenUnManagedIpMsgCh(ip, subnet),
 		CmdIpUnmanagedAlarm)
 }
 

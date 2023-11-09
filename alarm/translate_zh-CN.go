@@ -13,11 +13,11 @@ const (
 	HaCmdMasterDown HaCmd = "master_down"
 )
 
-func genCpuUsageMessageCh(ip string, value, limit uint64) string {
+func GenCpuUsageMessageCh(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("的CPU使用率")
+	buf.WriteString(" 的CPU使用率")
 	buf.WriteString(strconv.FormatUint(value, 10))
 	buf.WriteString("% 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
@@ -25,11 +25,11 @@ func genCpuUsageMessageCh(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genMemoryUsageMessageCh(ip string, value, limit uint64) string {
+func GenMemoryUsageMessageCh(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("的内存使用率")
+	buf.WriteString(" 的内存使用率")
 	buf.WriteString(strconv.FormatUint(value, 10))
 	buf.WriteString("% 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
@@ -37,11 +37,11 @@ func genMemoryUsageMessageCh(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genStoreUsageMessageCh(ip string, value, limit uint64) string {
+func GenStoreUsageMessageCh(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("的磁盘使用率")
+	buf.WriteString(" 的磁盘使用率")
 	buf.WriteString(strconv.FormatUint(value, 10))
 	buf.WriteString("% 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
@@ -49,13 +49,13 @@ func genStoreUsageMessageCh(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genSubnetRadioMessageCh(ip, subnet string, value, limit uint64) string {
+func GenSubnetRadioMessageCh(ip, subnet string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("地址池 ")
+	buf.WriteString(" 地址池 ")
 	buf.WriteString(subnet)
-	buf.WriteString("的使用率")
+	buf.WriteString(" 的使用率")
 	buf.WriteString(strconv.FormatUint(value, 10))
 	buf.WriteString("% 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
@@ -63,33 +63,33 @@ func genSubnetRadioMessageCh(ip, subnet string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genQpsMessageCh(ip string, value, limit uint64) string {
+func GenQpsMessageCh(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("的QPS ")
+	buf.WriteString(" 的QPS ")
 	buf.WriteString(strconv.FormatUint(value, 10))
-	buf.WriteString("超过了")
+	buf.WriteString(" 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
 	return buf.String()
 }
 
-func genLpsMessageCh(ip string, value, limit uint64) string {
+func GenLpsMessageCh(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("节点")
+	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("的LPS ")
+	buf.WriteString(" 的LPS ")
 	buf.WriteString(strconv.FormatUint(value, 10))
-	buf.WriteString("超过了")
+	buf.WriteString(" 超过了")
 	buf.WriteString(strconv.FormatUint(limit, 10))
 	return buf.String()
 }
 
-func genHaTriggerMessageCh(cmd, role, master, slave string) string {
+func GenHaTriggerMessageCh(cmd, role, master, slave string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("服务 ")
 	buf.WriteString(role)
-	buf.WriteString("由")
+	buf.WriteString(" 由")
 	if HaCmd(cmd) == HaCmdMasterUp {
 		buf.WriteString("辅节点 ")
 		buf.WriteString(slave)
@@ -104,33 +104,33 @@ func genHaTriggerMessageCh(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
-func genNodeOfflineMessageCh(ip string) string {
+func GenNodeOfflineMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("节点 ")
 	buf.WriteString(ip)
-	buf.WriteString("离线")
+	buf.WriteString(" 离线")
 	return buf.String()
 }
 
-func genServiceOfflineMessageCh(node, name string) string {
+func GenServiceOfflineMessageCh(node, name string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("节点 ")
 	buf.WriteString(node)
 	buf.WriteString(" 服务 ")
 	buf.WriteString(name)
-	buf.WriteString("离线")
+	buf.WriteString(" 离线")
 	return buf.String()
 }
 
-func genSubnetConflictMessageCh(subnet string) string {
+func GenSubnetConflictMessageCh(subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("子网 ")
 	buf.WriteString(subnet)
-	buf.WriteString("冲突")
+	buf.WriteString(" 冲突")
 	return buf.String()
 }
 
-func genIllegalDhcpMessageCh(ip, mac string) string {
+func GenIllegalDhcpMessageCh(ip, mac string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("发现非法DHCP服务器IP ")
 	buf.WriteString(ip)
@@ -139,39 +139,39 @@ func genIllegalDhcpMessageCh(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageCh(device, ip, oldMac, newMac string) string {
+func GenIpMacObsoletedMessageCh(device, ip, oldMac, newMac string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("终端")
+	buf.WriteString("终端 ")
 	buf.WriteString(device)
-	buf.WriteString("的IP")
+	buf.WriteString(" 的IP ")
 	buf.WriteString(ip)
-	buf.WriteString("上所绑定的MAC从")
+	buf.WriteString(" 上所绑定的MAC从 ")
 	buf.WriteString(oldMac)
-	buf.WriteString("变更为")
+	buf.WriteString(" 变更为 ")
 	buf.WriteString(newMac)
 	return buf.String()
 }
 
-func genIpPortObsoletedMessageCh(equip, port, obsolete, current string) string {
+func GenIpPortObsoletedMessageCh(equip, port, obsolete, current string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("设备")
+	buf.WriteString("设备 ")
 	buf.WriteString(equip)
-	buf.WriteString("的端口")
+	buf.WriteString(" 的端口 ")
 	buf.WriteString(port)
-	buf.WriteString("上的IP由")
+	buf.WriteString(" 上的IP由 ")
 	buf.WriteString(obsolete)
-	buf.WriteString("变更为")
+	buf.WriteString(" 变更为 ")
 	buf.WriteString(current)
 	return buf.String()
 }
 
-func zhCNUnManagedIpMsg(ip, subnet string) string {
+func GenUnManagedIpMsgCh(ip, subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("IP ")
 	buf.WriteString(ip)
-	buf.WriteString("的所属的子网 ")
+	buf.WriteString(" 的所属的子网 ")
 	buf.WriteString(subnet)
-	buf.WriteString("不在系统规划范围内")
+	buf.WriteString(" 不在系统规划范围内")
 	return buf.String()
 }
 

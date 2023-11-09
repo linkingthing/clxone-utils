@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func genCpuUsageMessageEn(ip string, value, limit uint64) string {
+func GenCpuUsageMessageEn(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -17,7 +17,7 @@ func genCpuUsageMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genMemoryUsageMessageEn(ip string, value, limit uint64) string {
+func GenMemoryUsageMessageEn(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -29,7 +29,7 @@ func genMemoryUsageMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genStoreUsageMessageEn(ip string, value, limit uint64) string {
+func GenStoreUsageMessageEn(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -41,7 +41,7 @@ func genStoreUsageMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genSubnetRadioMessageEn(ip, subnet string, value, limit uint64) string {
+func GenSubnetRadioMessageEn(ip, subnet string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -54,7 +54,7 @@ func genSubnetRadioMessageEn(ip, subnet string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genQpsMessageEn(ip string, value, limit uint64) string {
+func GenQpsMessageEn(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -65,7 +65,7 @@ func genQpsMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genLpsMessageEn(ip string, value, limit uint64) string {
+func GenLpsMessageEn(ip string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -76,7 +76,7 @@ func genLpsMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
-func genHaTriggerMessageEn(cmd, role, master, slave string) string {
+func GenHaTriggerMessageEn(cmd, role, master, slave string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("serve ")
 	buf.WriteString(role)
@@ -95,7 +95,7 @@ func genHaTriggerMessageEn(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
-func genNodeOfflineMessageEn(ip string) string {
+func GenNodeOfflineMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(ip)
@@ -103,7 +103,7 @@ func genNodeOfflineMessageEn(ip string) string {
 	return buf.String()
 }
 
-func genServiceOfflineMessageEn(node, name string) string {
+func GenServiceOfflineMessageEn(node, name string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
 	buf.WriteString(node)
@@ -113,7 +113,7 @@ func genServiceOfflineMessageEn(node, name string) string {
 	return buf.String()
 }
 
-func genSubnetConflictMessageEn(subnet string) string {
+func GenSubnetConflictMessageEn(subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("subnet ")
 	buf.WriteString(subnet)
@@ -121,7 +121,7 @@ func genSubnetConflictMessageEn(subnet string) string {
 	return buf.String()
 }
 
-func genIllegalDhcpMessageEn(ip, mac string) string {
+func GenIllegalDhcpMessageEn(ip, mac string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("found illegal DHCP service IP:")
 	buf.WriteString(ip)
@@ -130,7 +130,7 @@ func genIllegalDhcpMessageEn(ip, mac string) string {
 	return buf.String()
 }
 
-func genIpMacObsoletedMessageEn(device, ip, oldMac, newMac string) string {
+func GenIpMacObsoletedMessageEn(device, ip, oldMac, newMac string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("the mac bound onto ip ")
 	buf.WriteString(ip)
@@ -143,7 +143,7 @@ func genIpMacObsoletedMessageEn(device, ip, oldMac, newMac string) string {
 	return buf.String()
 }
 
-func genIpPortObsoletedMessageEn(equip, port, obsolete, current string) string {
+func GenIpPortObsoletedMessageEn(equip, port, obsolete, current string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("the IP of the port ")
 	buf.WriteString(port)
@@ -156,7 +156,7 @@ func genIpPortObsoletedMessageEn(equip, port, obsolete, current string) string {
 	return buf.String()
 }
 
-func enUSUnManagedIpMsg(ip, subnet string) string {
+func GenUnManagedIpMsg(ip, subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("subnet:")
 	buf.WriteString(subnet)
