@@ -15,6 +15,14 @@ func SetKV[T any](kv *consulapi.KV, q *consulapi.WriteOptions, key string, value
 	return err
 }
 
+func GetKVKeys(kv *consulapi.KV, q *consulapi.QueryOptions, prefix, separate string) ([]string, error) {
+	keys, _, err := kv.Keys(prefix, separate, q)
+	if err != nil {
+		return nil, err
+	}
+	return keys, err
+}
+
 func GetKV[v any](kv *consulapi.KV, key string, q *consulapi.QueryOptions, value v) (bool, error) {
 	pair, _, err := kv.Get(key, q)
 	if err != nil {

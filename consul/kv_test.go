@@ -58,6 +58,10 @@ func TestNewKV(t *testing.T) {
 		t.Log("after", n)
 	}
 
+	keys, err := GetKVKeys(kv, nil, "node", "")
+	assert.NoError(t, err)
+	t.Log("keys", keys)
+
 	kNodes, err := ListKVs[*KNode](kv, "node", nil)
 	assert.NoError(t, err)
 	for _, kNode := range kNodes {
