@@ -16,6 +16,7 @@ type Client struct {
 	token    string
 	Username string
 	Password string
+	Header   map[string]string
 }
 
 func NewHttpClient() *Client {
@@ -80,6 +81,18 @@ func (cli *Client) SetTimeout(timeout time.Duration) *Client {
 	return cli
 }
 
+func (cli *Client) SetHeader(k, v string) {
+	if k == "" || v == "" {
+		return
+	}
+
+	if cli.Header == nil {
+		cli.Header = make(map[string]string)
+	}
+
+	cli.Header[k] = v
+}
+
 func (cli *Client) Post(url string, req, resp interface{}) error {
 	return cli.request(http.MethodPost, url, req, resp)
 }
@@ -118,6 +131,11 @@ func (cli *Client) request(httpMethod, url string, req, resp interface{}) error 
 	}
 	if cli.HasBaseAuth() {
 		httpReq.SetBasicAuth(cli.Username, cli.Password)
+	}
+	if cli.Header != nil && len(cli.Header) > 0 {
+		for k, v := range cli.Header {
+			httpReq.Header.Set(k, v)
+		}
 	}
 
 	httpResp, err := cli.Do(httpReq)
