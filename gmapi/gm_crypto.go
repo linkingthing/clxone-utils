@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
 	httputil "github.com/linkingthing/clxone-utils/http"
@@ -19,15 +18,15 @@ const ApiSm4EcbDecrypt = "/sm4-ecb/decrypt"
 const ApiHash = "/hash"
 
 type GmResponse struct {
-	Data    interface{} `json:"data"`
-	Result  string      `json:"result"`
-	Code    string      `json:"code"`
-	Message string      `json:"message"`
-	Success bool        `json:"success"`
+	Data    map[string]string `json:"data"`
+	Result  string            `json:"result"`
+	Code    string            `json:"code"`
+	Message string            `json:"message"`
+	Success bool              `json:"success"`
 }
 
 type GmRequest struct {
-	Data interface{} `json:"data"`
+	DataList []string `json:"dataList"`
 }
 
 type GmEncrypt struct {
@@ -38,7 +37,6 @@ type GmEncrypt struct {
 }
 
 var gmEncryptClient *GmEncrypt
-var gmOnce = sync.Once{}
 
 func GetGmClient() *GmEncrypt {
 	if gmEncryptClient == nil {
@@ -86,76 +84,67 @@ func InitGmEncrypt(url string, authKey string) error {
 	return nil
 }
 
-func (g *GmEncrypt) ApiSm4EcbEncrypt(s interface{}) (string, error) {
+func (g *GmEncrypt) ApiSm4EcbEncrypt(s ...string) (map[string]string, error) {
+	resMap := make(map[string]string)
 	if g.err != nil {
-		return "", g.err
+		return resMap, g.err
 	}
 
 	var resp GmResponse
 	req := GmRequest{
-		Data: s,
+		DataList: s,
 	}
 
 	api := g.genApiUrl(ApiSm4EcbEncrypt)
 	if err := g.gmHttpClient.Post(api, &req, &resp); err != nil {
-		return "", err
+		return resMap, err
 	}
 
 	if resp.IsSuccess() {
-		if res, ok := resp.Data.(string); ok {
-			return res, nil
-		} else {
-			return "", errors.New("data is not a string")
-		}
+		return resp.Data, nil
 	}
 
-	return "", fmt.Errorf("error:%s", resp.GetMessage())
+	return resMap, fmt.Errorf("error:%s", resp.GetMessage())
 }
 
-func (g *GmEncrypt) ApiSm4EcbDecrypt(s string) (string, error) {
+func (g *GmEncrypt) ApiSm4EcbDecrypt(s ...string) (map[string]string, error) {
+	resMap := make(map[string]string)
 	if g.err != nil {
-		return "", g.err
+		return resMap, g.err
 	}
 	var resp GmResponse
 	req := GmRequest{
-		Data: s,
+		DataList: s,
 	}
 	api := g.genApiUrl(ApiSm4EcbDecrypt)
 	if err := g.gmHttpClient.Post(api, &req, &resp); err != nil {
-		return "", err
+		return resMap, err
 	}
 
 	if resp.IsSuccess() {
-		if res, ok := resp.Data.(string); ok {
-			return res, nil
-		} else {
-			return "", errors.New("data is not a string")
-		}
+		return resp.Data, nil
 	}
 
-	return "", fmt.Errorf("error:%s", resp.GetMessage())
+	return resMap, fmt.Errorf("error:%s", resp.GetMessage())
 }
 
-func (g *GmEncrypt) ApiHash(s string) (string, error) {
+func (g *GmEncrypt) ApiHash(s ...string) (map[string]string, error) {
+	resMap := make(map[string]string)
 	if g.err != nil {
-		return "", g.err
+		return resMap, g.err
 	}
 	var resp GmResponse
 	req := GmRequest{
-		Data: s,
+		DataList: s,
 	}
 	api := g.genApiUrl(ApiHash)
 	if err := g.gmHttpClient.Post(api, &req, &resp); err != nil {
-		return "", err
+		return resMap, err
 	}
 
 	if resp.IsSuccess() {
-		if res, ok := resp.Data.(string); ok {
-			return res, nil
-		} else {
-			return "", errors.New("data is not a string")
-		}
+		return resp.Data, nil
 	}
 
-	return "", fmt.Errorf("error:%s", resp.GetMessage())
+	return resMap, fmt.Errorf("error:%s", resp.GetMessage())
 }

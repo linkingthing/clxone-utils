@@ -15,20 +15,30 @@ func setup() {
 
 func Test_ApiEncryptAndDecrypt(t *testing.T) {
 	realData := "123456"
-	InitGmEncrypt("http://192.168.31.211:43263/datahub/hsm-service/crypto", "")
+	err := InitGmEncrypt("http://192.168.31.211:39095/datahub/hsm-service/crypto", "b")
+	if err != nil {
+		t.Error(err)
+		return
+	}
 	encryptData, err := GetGmClient().ApiSm4EcbEncrypt(realData)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	decryptData, err := GetGmClient().ApiSm4EcbDecrypt(encryptData)
+	encryptItem := encryptData[realData]
+	if encryptItem == "" {
+		t.Error("encrypt data is empty")
+		return
+	}
+
+	decryptData, err := GetGmClient().ApiSm4EcbDecrypt(encryptItem)
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
-	if realData != decryptData {
+	if realData != decryptData[encryptItem] {
 		t.Errorf("encrypt and decrypt are not equal")
 		return
 	}
