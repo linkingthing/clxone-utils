@@ -1,13 +1,16 @@
 package gmapi
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/tjfoc/gmsm/gmtls"
+	"github.com/tjfoc/gmsm/x509"
 
 	httputil "github.com/linkingthing/clxone-utils/http"
 )
@@ -48,6 +51,10 @@ func GetGmClient() *GmEncrypt {
 	return gmEncryptClient
 }
 
+func (g *GmEncrypt) GetHttpClient() *http.Client {
+	return gmEncryptClient.gmHttpClient.Client
+}
+
 func (g *GmEncrypt) genApiUrl(api string) string {
 	return strings.TrimRight(g.AgentUrl, "/") + "/" + strings.TrimLeft(api, "/")
 }
@@ -60,7 +67,7 @@ func (g *GmResponse) GetMessage() string {
 	return g.Message
 }
 
-func InitGmEncrypt(url string, authKey string) error {
+func InitGmEncrypt(url string, authKey string, caCertPath string) error {
 	gmEncryptClient = &GmEncrypt{
 		AgentUrl: url,
 		AuthKey:  authKey,
@@ -74,12 +81,16 @@ func InitGmEncrypt(url string, authKey string) error {
 		return errors.New("auth key can not be empty")
 	}
 
-	gmEncryptClient.gmHttpClient = &httputil.Client{Client: &http.Client{
-		Timeout:   30 * time.Second,
-		Transport: &http.Transport{DisableKeepAlives: true, TLSClientConfig: &tls.Config{InsecureSkipVerify: true}},
-	},
+	certPool := x509.NewCertPool()
+	caCert, err := ioutil.ReadFile(caCertPath)
+	if err != nil {
+		panic(err)
 	}
+	certPool.AppendCertsFromPEM(caCert)
 
+	httpClient := gmtls.NewHTTPSClient(certPool)
+	httpClient.Timeout = 30 * time.Second
+	gmEncryptClient.gmHttpClient = &httputil.Client{Client: httpClient}
 	gmEncryptClient.gmHttpClient.SetHeader("Authentication", authKey)
 	return nil
 }

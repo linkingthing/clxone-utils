@@ -3,6 +3,7 @@ module github.com/linkingthing/clxone-utils
 go 1.18
 
 require (
+	github.com/ClickHouse/clickhouse-go/v2 v2.6.0
 	github.com/gin-gonic/gin v1.8.0
 	github.com/go-kit/kit v0.10.0
 	github.com/golang/protobuf v1.5.2
@@ -16,7 +17,6 @@ require (
 	golang.org/x/text v0.3.8
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
-	github.com/ClickHouse/clickhouse-go/v2 v2.6.0
 )
 
 require (
@@ -55,6 +55,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
+	github.com/tjfoc/gmsm v1.4.2-0.20220114090716-36b992c51540 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/xuri/efp v0.0.0-20220603152613-6918739fd470 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
