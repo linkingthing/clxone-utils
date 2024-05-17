@@ -16,9 +16,9 @@ import (
 )
 
 // ApiSm4EcbEncrypt ECB（Electronic Codebook）模式是一种基本的分组密码工作模式
-const ApiSm4EcbEncrypt = "/sm4-ecb/encrypt"
-const ApiSm4EcbDecrypt = "/sm4-ecb/decrypt"
-const ApiHash = "/hash"
+const ApiSm4EcbEncrypt = "/datahub/hsm-service/crypto/sm4-ecb/encrypt"
+const ApiSm4EcbDecrypt = "/datahub/hsm-service/crypto/sm4-ecb/decrypt"
+const ApiHash = "/datahub/hsm-service/crypto/hash"
 
 type GmResponse struct {
 	Data    map[string]string `json:"data"`
