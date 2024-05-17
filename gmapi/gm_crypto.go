@@ -125,7 +125,13 @@ func InitGmEncrypt(conf GMEncryptConf) error {
 			}
 			httpClient = gmtls.NewAuthHTTPSClient(certPool, &clientAuthCert)
 		} else {
-			httpClient = gmtls.NewHTTPSClient(certPool)
+			httpClient = gmtls.NewCustomHTTPSClient(&gmtls.Config{
+				GMSupport:          &gmtls.GMSupport{},
+				RootCAs:            certPool,
+				InsecureSkipVerify: true,
+			})
+
+			//httpClient = gmtls.NewHTTPSClient(certPool)
 		}
 		httpClient.Timeout = 30 * time.Second
 		gmEncryptClient.gmHttpClient = &httputil.Client{Client: httpClient}
