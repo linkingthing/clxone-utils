@@ -80,6 +80,8 @@ type GMEncryptConf struct {
 	MonitorPlatformToken string `yaml:"monitor_platform_token"`
 	//GmCaCertPath 国密CA证书路径
 	GmCaCertPath string `yaml:"gm_ca_cert_path"`
+	//EnableGmClientAuth 是否开启客户端证书认证
+	EnableGmClientAuth bool `yaml:"enable_gm_client_auth"`
 	//GmAuthCertPath 国密客户端认证证书路径
 	GmAuthCertPath string `yaml:"gm_auth_cert_path"`
 	//GmAuthKeyPath 国密客户端认证密钥对路径
@@ -116,10 +118,10 @@ func InitGmEncrypt(conf GMEncryptConf) error {
 		certPool.AppendCertsFromPEM(caCert)
 
 		var httpClient *http.Client
-		if conf.GmAuthCertPath != "" && conf.GmAuthKeyPath != "" {
+		if conf.EnableGmClientAuth {
 			clientAuthCert, err := gmtls.LoadX509KeyPair(conf.GmAuthCertPath, conf.GmAuthKeyPath)
 			if err != nil {
-				return err
+				return fmt.Errorf("falied to enable client auth : %v", err)
 			}
 			httpClient = gmtls.NewAuthHTTPSClient(certPool, &clientAuthCert)
 		} else {
