@@ -122,6 +122,14 @@ func GenServiceOfflineMessageCh(node, name string) string {
 	return buf.String()
 }
 
+func GenDbOfflineMessageCh(name string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("数据库 ")
+	buf.WriteString(name)
+	buf.WriteString(" 离线")
+	return buf.String()
+}
+
 func GenSubnetConflictMessageCh(subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("子网 ")

@@ -113,6 +113,14 @@ func GenServiceOfflineMessageEn(node, name string) string {
 	return buf.String()
 }
 
+func GenDbOfflineMessageEn(name string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("database ")
+	buf.WriteString(name)
+	buf.WriteString(" offline")
+	return buf.String()
+}
+
 func GenSubnetConflictMessageEn(subnet string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("subnet ")
