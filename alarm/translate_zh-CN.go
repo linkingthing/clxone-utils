@@ -122,7 +122,7 @@ func GenServiceOfflineMessageCh(node, name string) string {
 	return buf.String()
 }
 
-func GenDbOfflineMessageCh(name string) string {
+func GenDatabaseOfflineMessageCh(name string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("数据库 ")
 	buf.WriteString(name)

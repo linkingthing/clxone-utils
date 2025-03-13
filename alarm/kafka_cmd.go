@@ -53,4 +53,6 @@ const (
 	CmdDhcpIllegalOptionWithInvalidClientIdAlarm       = "dhcp_illegal_option_with_invalid_client_id_alarm"
 	CmdDhcpIllegalOptionWithEmptyClientIdAlarm         = "dhcp_illegal_option_with_empty_client_id_alarm"
 	CmdDhcpIllegalOptionsAlarm                         = "dhcp_illegal_options_alarm"
+
+	CmdDatabaseOfflineAlarm = "database_offline_alarm"
 )

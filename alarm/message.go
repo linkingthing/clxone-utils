@@ -169,6 +169,18 @@ func (a *Alarm) AddServiceOfflineAlarm(node, name string) error {
 		CmdServiceOfflineAlarm)
 }
 
+func (a *Alarm) AddDbOfflineAlarm(name string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_databaseOffline)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		GenDatabaseOfflineMessageEn(name),
+		GenDatabaseOfflineMessageCh(name),
+		CmdDatabaseOfflineAlarm)
+}
+
 func (a *Alarm) AddIllegalDHCPAlarm(ip, mac string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_illegalDhcp)
 	if threshold == nil {
