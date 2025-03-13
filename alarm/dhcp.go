@@ -47,13 +47,13 @@ func (a *Alarm) AddDhcpIllegalPacketWithOpcodeAlarm(mac, hostname, messageType, 
 }
 func GenDhcpIllegalPacketWithOpcodeMessageCh(mac, hostname, messageType, opcode string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端MAC：")
+	buf.WriteString("收到客户端 MAC：")
 	buf.WriteString(mac)
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 的非法报文")
+	buf.WriteString(" 的非法报文 ")
 	buf.WriteString(messageType)
 	buf.WriteString("，")
 	if len(opcode) > 0 {
@@ -101,16 +101,16 @@ func (a *Alarm) AddDhcpIllegalClientAlarm(mac, duid, hostname string) error {
 func GenDhcpIllegalClientAlarmMessageCh(mac, duid, hostname string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("客户端 ")
-	if mac != "" {
-		buf.WriteString("Mac：")
-		buf.WriteString(mac)
-	}
 	if duid != "" {
 		buf.WriteString("DUID：")
 		buf.WriteString(duid)
 	}
+	if mac != "" {
+		buf.WriteString(" MAC：")
+		buf.WriteString(mac)
+	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 非法接入")
@@ -150,20 +150,21 @@ func (a *Alarm) AddDhcpIllegalClientWithHighQpsAlarm(mac, duid, hostname, rateLi
 func GenDhcpIllegalClientWithHighQpsAlarmMessageCh(mac, duid, hostname, rateLimit string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("客户端 ")
-	if mac != "" {
-		buf.WriteString("Mac：")
-		buf.WriteString(mac)
-	}
 	if duid != "" {
 		buf.WriteString("DUID：")
 		buf.WriteString(duid)
 	}
+	if mac != "" {
+		buf.WriteString(" MAC：")
+		buf.WriteString(mac)
+	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 请求速度超过阈值 ")
 	buf.WriteString(rateLimit)
+	buf.WriteString("r/s")
 	return buf.String()
 }
 func GenDhcpIllegalClientWithHighQpsAlarmMessageEn(mac, duid, hostname, rateLimit string) string {
@@ -183,49 +184,68 @@ func GenDhcpIllegalClientWithHighQpsAlarmMessageEn(mac, duid, hostname, rateLimi
 	}
 	buf.WriteString(" has exceeded the rate limit")
 	buf.WriteString(rateLimit)
+	buf.WriteString(" r/s")
 	return buf.String()
 }
 
 // illegal_option_with_unexpected_message_type_alarm
-func (a *Alarm) AddDhcpIllegalOptionWithUnexpectedMessageTypeAlarm(mac, hostname, messageType, value string) error {
+func (a *Alarm) AddDhcpIllegalOptionWithUnexpectedMessageTypeAlarm(duid, mac, hostname, messageType string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_dhcpIllegalOptionWithUnexpectedMessageTypeAlarm)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageEn(mac, hostname, messageType, value),
-		GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageCh(mac, hostname, messageType, value),
+		GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageEn(duid, mac, hostname, messageType),
+		GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageCh(duid, mac, hostname, messageType),
 		CmdDhcpIllegalOptionWithUnexpectedMessageTypeAlarm)
 }
-func GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageCh(mac, hostname, messageType, value string) string {
+func GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageCh(duid, mac, hostname, messageType string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端Mac：")
-	buf.WriteString(mac)
-
+	buf.WriteString("收到客户端 ")
+	if duid != "" {
+		buf.WriteString("DUID：")
+		buf.WriteString(duid)
+	}
+	if mac != "" {
+		buf.WriteString(" MAC：")
+		buf.WriteString(mac)
+	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	if duid == "" && mac != "" {
+		buf.WriteString(" 报文携带非法OPTION 53")
+	}
+	if duid != "" {
+		buf.WriteString(" 非法报文")
+	}
+	buf.WriteString("，不支持报文类型 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION 53，不支持报文类型")
-	buf.WriteString(value)
 	return buf.String()
 }
-func GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageEn(mac, hostname, messageType, value string) string {
+func GenDhcpIllegalOptionWithUnexpectedMessageTypeAlarmMessageEn(duid, mac, hostname, messageType string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("Received a message of type ")
 	buf.WriteString(messageType)
-	buf.WriteString(" from the client with Mac address ")
-	buf.WriteString(mac)
+	buf.WriteString(" from the client with ")
+	if duid != "" {
+		buf.WriteString(" DUID ")
+		buf.WriteString(duid)
+	}
+	if mac != "" {
+		buf.WriteString(" and Mac address ")
+		buf.WriteString(mac)
+	}
 	if hostname != "" {
-		buf.WriteString(" and hostname ")
+		buf.WriteString(" and hostname, ")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" , carrying an illegal OPTION 53. The message type ")
-	buf.WriteString(value)
-	buf.WriteString(" is not supported")
+	if duid == "" && mac != "" {
+		buf.WriteString(" carrying an illegal OPTION 53,")
+	}
+	buf.WriteString(" The message type is not supported")
 	return buf.String()
 }
 
@@ -243,16 +263,16 @@ func (a *Alarm) AddDhcpIllegalOptionWithUltraShortLeaseTimeAlarm(mac, hostname, 
 }
 func GenDhcpIllegalOptionWithUltraShortLeaseTimeAlarmMessageCh(mac, hostname, messageType, value string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端Mac：")
+	buf.WriteString("收到客户端 MAC：")
 	buf.WriteString(mac)
 
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION 51，请求租约时间")
+	buf.WriteString(" 携带非法OPTION 51，请求租约时间")
 	buf.WriteString(value)
 	buf.WriteString(" 过短")
 	return buf.String()
@@ -287,16 +307,16 @@ func (a *Alarm) AddDhcpIllegalOptionWithUltraLongLeaseTimeAlarm(mac, hostname, m
 }
 func GenDhcpIllegalOptionWithUltraLongLeaseTimeAlarmMessageCh(mac, hostname, messageType, value string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端Mac：")
+	buf.WriteString("收到客户端 MAC：")
 	buf.WriteString(mac)
 
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION 51，请求租约时间")
+	buf.WriteString(" 携带非法OPTION 51，请求租约时间")
 	buf.WriteString(value)
 	buf.WriteString(" 过长")
 	return buf.String()
@@ -331,19 +351,26 @@ func (a *Alarm) AddDhcpIllegalOptionWithInvalidServerIdAlarm(duid, mac, hostname
 }
 func GenDhcpIllegalOptionWithInvalidServerIdAlarmMessageCh(duid, mac, hostname, messageType, value string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端DUID：")
+	buf.WriteString("收到客户端 DUID：")
 	buf.WriteString(duid)
 	if mac != "" {
-		buf.WriteString(" Mac：")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION 2，server id ")
+	buf.WriteString(" 携带非法OPTION ")
+	if duid == "" && mac != "" {
+		buf.WriteString("54,")
+	}
+	if duid != "" {
+		buf.WriteString("2")
+	}
+	buf.WriteString("，server id ")
 	buf.WriteString(value)
 	buf.WriteString(" 格式错误")
 	return buf.String()
@@ -388,17 +415,17 @@ func GenDhcpIllegalOptionWithUnexpectedServerIdAlarmMessageCh(duid, mac, hostnam
 		buf.WriteString(duid)
 	}
 	if mac != "" {
-		buf.WriteString(" Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION ")
-	if mac != "" {
+	buf.WriteString(" 携带非法OPTION ")
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -427,7 +454,7 @@ func GenDhcpIllegalOptionWithUnexpectedServerIdAlarmMessageEn(duid, mac, hostnam
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" , carrying an illegal OPTION ")
-	if mac != "" {
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -459,17 +486,17 @@ func GenDhcpIllegalOptionWithForbiddenServerIdAlarmMessageCh(duid, mac, hostname
 		buf.WriteString(duid)
 	}
 	if mac != "" {
-		buf.WriteString(" Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 报文")
+	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString("携带非法OPTION ")
-	if mac != "" {
+	buf.WriteString(" 携带非法OPTION ")
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -497,7 +524,7 @@ func GenDhcpIllegalOptionWithForbiddenServerIdAlarmMessageEn(duid, mac, hostname
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" , carrying an illegal OPTION ")
-	if mac != "" {
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -529,17 +556,17 @@ func GenDhcpIllegalOptionWithMandatoryServerIdAlarmMessageCh(duid, mac, hostname
 		buf.WriteString(duid)
 	}
 	if mac != "" {
-		buf.WriteString(" Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString(" 未携带OPTION ")
-	if mac != "" {
+	buf.WriteString("，未携带OPTION ")
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -565,7 +592,7 @@ func GenDhcpIllegalOptionWithMandatoryServerIdAlarmMessageEn(duid, mac, hostname
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" , The message does not carry OPTION ")
-	if mac != "" {
+	if duid == "" && mac != "" {
 		buf.WriteString("54")
 	}
 	if duid != "" {
@@ -595,11 +622,11 @@ func GenDhcpIllegalOptionWithInvalidClientIdAlarmMessageCh(duid, mac, hostname, 
 		buf.WriteString(duid)
 	}
 	if mac != "" {
-		buf.WriteString(" Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 报文 ")
@@ -633,47 +660,65 @@ func GenDhcpIllegalOptionWithInvalidClientIdAlarmMessageEn(duid, mac, hostname, 
 }
 
 // illegal_option_with_empty_client_id_alarm
-func (a *Alarm) AddDhcpIllegalOptionWithEmptyClientIdAlarm(mac, hostname, messageType string) error {
+func (a *Alarm) AddDhcpIllegalOptionWithEmptyClientIdAlarm(duid, mac, hostname, messageType string) error {
 	threshold := a.GetThreshold(pb.ThresholdName_dhcpIllegalOptionWithEmptyClientIdAlarm)
 	if threshold == nil {
 		return nil
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageCh(mac, hostname, messageType),
-		GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageEn(mac, hostname, messageType),
+		GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageEn(duid, mac, hostname, messageType),
+		GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageCh(duid, mac, hostname, messageType),
 		CmdDhcpIllegalOptionWithEmptyClientIdAlarm)
 }
-func GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageCh(mac, hostname, messageType string) string {
+func GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageCh(duid, mac, hostname, messageType string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("收到客户端 ")
+	if duid != "" {
+		buf.WriteString("DUID：")
+		buf.WriteString(duid)
+	}
 	if mac != "" {
-		buf.WriteString("Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 报文 ")
 	buf.WriteString(messageType)
-	buf.WriteString(" 未携带OPTION 61")
+	if duid == "" && mac != "" {
+		buf.WriteString("，未携带OPTION 61")
+	}
+	if duid != "" {
+		buf.WriteString("，未携带OPTION 1")
+	}
 	return buf.String()
 }
-func GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageEn(mac, hostname, messageType string) string {
+func GenDhcpIllegalOptionWithEmptyClientIdAlarmMessageEn(duid, mac, hostname, messageType string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("Received a message of type ")
 	buf.WriteString(messageType)
-	buf.WriteString(" from the client with ")
+	buf.WriteString(" from the client with")
+	if duid != "" {
+		buf.WriteString(" DUID ")
+		buf.WriteString(duid)
+	}
 	if mac != "" {
-		buf.WriteString("Mac address ")
+		buf.WriteString(" Mac address ")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
 		buf.WriteString(" hostname ")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" ,The message does not carry OPTION 61")
+	if duid == "" && mac != "" {
+		buf.WriteString(", The message does not carry OPTION 61")
+	}
+	if duid != "" {
+		buf.WriteString(", The message carries an illegal OPTION 1")
+	}
 	return buf.String()
 }
 
@@ -685,23 +730,23 @@ func (a *Alarm) AddDhcpIllegalOptionsAlarm(duid, mac, hostname, messageType stri
 	}
 
 	return a.sendAlarmToKafka(threshold,
-		GenDhcpIllegalOptionsAlarmMessageCh(duid, mac, hostname, messageType, optionCode, optionData),
 		GenDhcpIllegalOptionsAlarmMessageEn(duid, mac, hostname, messageType, optionCode, optionData),
+		GenDhcpIllegalOptionsAlarmMessageCh(duid, mac, hostname, messageType, optionCode, optionData),
 		CmdDhcpIllegalOptionsAlarm)
 }
 func GenDhcpIllegalOptionsAlarmMessageCh(duid, mac, hostname, messageType string, optionCode uint32, optionData string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("收到客户端 ")
 	if duid != "" {
-		buf.WriteString("DUID ")
+		buf.WriteString("DUID： ")
 		buf.WriteString(duid)
 	}
 	if mac != "" {
-		buf.WriteString("Mac address ")
+		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
 	}
 	if hostname != "" {
-		buf.WriteString(" hostname ")
+		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
 	buf.WriteString(" 报文 ")
