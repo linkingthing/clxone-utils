@@ -10,8 +10,8 @@ import (
 )
 
 func (a *Alarm) GetThreshold(name pb.ThresholdName) *Threshold {
-	a.Lock()
-	defer a.Unlock()
+	a.RLock()
+	defer a.RUnlock()
 	threshold, ok := a.ThresholdMap[name]
 	if !ok {
 		return nil

@@ -252,6 +252,16 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
+	pb.ThresholdName_dhcpIllegalInformPacketWithoutSourceAddrAlarm: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpIllegalInformPacketWithoutSourceAddrAlarm,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: false,
+		Value:    0,
+	},
 	pb.ThresholdName_dhcpIllegalClientAlarm: {
 		BaseThreshold: &pb.BaseThreshold{
 			Name:  pb.ThresholdName_dhcpIllegalClientAlarm,
@@ -352,9 +362,9 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
-	pb.ThresholdName_dhcpIllegalOptionWithEmptyClientIdAlarm: {
+	pb.ThresholdName_dhcpIllegalOptionWithMandatoryClientIdAlarm: {
 		BaseThreshold: &pb.BaseThreshold{
-			Name:  pb.ThresholdName_dhcpIllegalOptionWithEmptyClientIdAlarm,
+			Name:  pb.ThresholdName_dhcpIllegalOptionWithMandatoryClientIdAlarm,
 			Level: pb.ThresholdLevel_major,
 			Type:  pb.ThresholdType_trigger,
 		},

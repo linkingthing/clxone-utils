@@ -41,6 +41,7 @@ const (
 	CmdDhcpReservationIpConflictAlarm                  = "dhcp_reservation_ip_conflict_alarm"
 	CmdDhcpReservedIpConflictAlarm                     = "dhcp_reserved_ip_conflict_alarm"
 	CmdDhcpIllegalPacketWithOpcodeAlarm                = "dhcp_illegal_packet_with_opcode_alarm"
+	CmdDhcpIllegalInformPacketWithoutSourceAddrAlarm   = "dhcp_illegal_inform_packet_without_source_addr_alarm"
 	CmdDhcpIllegalClientAlarm                          = "dhcp_illegal_client_alarm"
 	CmdDhcpIllegalClientWithHighQpsAlarm               = "dhcp_illegal_client_with_high_qps_alarm"
 	CmdDhcpIllegalOptionWithUnexpectedMessageTypeAlarm = "dhcp_illegal_option_with_unexpected_message_type_alarm"
@@ -51,7 +52,7 @@ const (
 	CmdDhcpIllegalOptionWithForbiddenServerIdAlarm     = "dhcp_illegal_option_with_forbidden_server_id_alarm"
 	CmdDhcpIllegalOptionWithMandatoryServerIdAlarm     = "dhcp_illegal_option_with_mandatory_server_id_alarm"
 	CmdDhcpIllegalOptionWithInvalidClientIdAlarm       = "dhcp_illegal_option_with_invalid_client_id_alarm"
-	CmdDhcpIllegalOptionWithEmptyClientIdAlarm         = "dhcp_illegal_option_with_empty_client_id_alarm"
+	CmdDhcpIllegalOptionWithMandatoryClientIdAlarm     = "dhcp_illegal_option_with_mandatory_client_id_alarm"
 	CmdDhcpIllegalOptionsAlarm                         = "dhcp_illegal_options_alarm"
 
 	CmdDatabaseOfflineAlarm = "database_offline_alarm"
