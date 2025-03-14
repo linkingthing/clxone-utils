@@ -382,4 +382,14 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
+	pb.ThresholdName_dhcpLeaseExceptionAlarm: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_dhcpLeaseExceptionAlarm,
+			Level: pb.ThresholdLevel_major,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: false,
+		Value:    0,
+	},
 }

@@ -427,8 +427,11 @@ func (a *Alarm) AddDhcpIllegalOptionWithInvalidServerIdAlarm(client DHCPClient, 
 }
 func GenDhcpIllegalOptionWithInvalidServerIdAlarmMessageCh(duid, mac, hostname, messageType string, optionCode uint32, optionData string) string {
 	buf := bytes.Buffer{}
-	buf.WriteString("收到客户端 DUID：")
-	buf.WriteString(duid)
+	buf.WriteString("收到客户端")
+	if duid != "" {
+		buf.WriteString(" DUID：")
+		buf.WriteString(duid)
+	}
 	if mac != "" {
 		buf.WriteString(" MAC：")
 		buf.WriteString(mac)
@@ -450,8 +453,11 @@ func GenDhcpIllegalOptionWithInvalidServerIdAlarmMessageEn(duid, mac, hostname, 
 	buf := bytes.Buffer{}
 	buf.WriteString("Received a message of type ")
 	buf.WriteString(messageType)
-	buf.WriteString(" from the client with DUID ")
-	buf.WriteString(duid)
+	buf.WriteString(" from the client with")
+	if duid != "" {
+		buf.WriteString(" DUID ")
+		buf.WriteString(duid)
+	}
 	if mac != "" {
 		buf.WriteString(", Mac address ")
 		buf.WriteString(mac)
@@ -823,4 +829,34 @@ func GenDhcpIllegalOptionsAlarmMessageEn(duid, mac, hostname, messageType string
 		buf.WriteString(",")
 	}
 	return strings.TrimRight(buf.String(), ",")
+}
+
+func (a *Alarm) AddDhcpLeaseExceptionAlarm(subnet, ip string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_dhcpLeaseExceptionAlarm)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		GenDhcpLeaseExceptionAlarmMessageEn(subnet, ip),
+		GenDhcpLeaseExceptionAlarmMessageCh(subnet, ip),
+		CmdDhcpLeaseExceptionAlarm)
+}
+func GenDhcpLeaseExceptionAlarmMessageCh(subnet, ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("子网 ")
+	buf.WriteString(subnet)
+	buf.WriteString(" 地址 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 租约异常，地址已被其他客户端使用")
+	return buf.String()
+}
+func GenDhcpLeaseExceptionAlarmMessageEn(subnet, ip string) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("The lease for address ")
+	buf.WriteString(ip)
+	buf.WriteString(" in the subnet ")
+	buf.WriteString(subnet)
+	buf.WriteString(" is abnormal. The address has been used by another client")
+	return buf.String()
 }
