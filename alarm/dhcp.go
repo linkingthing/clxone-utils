@@ -507,7 +507,7 @@ func GenDhcpIllegalOptionWithUnexpectedServerIdAlarmMessageCh(duid, mac, hostnam
 	buf.WriteString(strconv.Itoa(int(optionCode)))
 	buf.WriteString("，server id ")
 	buf.WriteString(optionData)
-	buf.WriteString(" 与当前服务器地址不匹配")
+	buf.WriteString(" 与当前服务器不匹配")
 	return buf.String()
 }
 func GenDhcpIllegalOptionWithUnexpectedServerIdAlarmMessageEn(duid, mac, hostname, messageType string, optionCode uint32, optionData string) string {
