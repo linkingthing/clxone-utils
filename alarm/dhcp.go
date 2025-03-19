@@ -181,7 +181,7 @@ func GenDhcpIllegalClientAlarmMessageCh(mac, duid, hostname string) string {
 		buf.WriteString(" 主机名：")
 		buf.WriteString(hostname)
 	}
-	buf.WriteString(" 非法接入")
+	buf.WriteString(" 正在尝试非法接入")
 	return buf.String()
 }
 func GenDhcpIllegalClientAlarmMessageEn(mac, duid, hostname string) string {
