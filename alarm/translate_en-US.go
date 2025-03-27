@@ -95,6 +95,19 @@ func GenHaTriggerMessageEn(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
+func GenBackupTriggerMessageEn(ip string, start bool) string {
+	buf := bytes.Buffer{}
+	if start {
+		buf.WriteString("The cluster is unavailable, switch to the disaster recovery node ")
+		buf.WriteString(ip)
+	} else {
+		buf.WriteString("The cluster has been restored. Switch back from the disaster recovery node ")
+		buf.WriteString(ip)
+		buf.WriteString(" to the cluster")
+	}
+	return buf.String()
+}
+
 func GenNodeOfflineMessageEn(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")

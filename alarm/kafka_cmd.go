@@ -23,6 +23,7 @@ const (
 	CmdLpsAlarm                                        = "lps_alarm"
 	CmdQpsAlarm                                        = "qps_alarm"
 	CmdHaTriggerAlarm                                  = "ha_trigger_alarm"
+	CmdBackupTriggerAlarm                              = "backup_trigger_alarm"
 	CmdNodeOfflineAlarm                                = "node_offline_alarm"
 	CmdServiceOfflineAlarm                             = "service_offline_alarm"
 	CmdIllegalDhcpAlarm                                = "illegal_dhcp_alarm"

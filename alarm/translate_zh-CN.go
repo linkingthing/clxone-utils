@@ -104,6 +104,19 @@ func GenHaTriggerMessageCh(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
+func GenBackupTriggerMessageCh(ip string, start bool) string {
+	buf := bytes.Buffer{}
+	if start {
+		buf.WriteString("集群不可用，切换到灾备节点 ")
+		buf.WriteString(ip)
+	} else {
+		buf.WriteString("集群恢复，从灾备节点 ")
+		buf.WriteString(ip)
+		buf.WriteString(" 切回集群")
+	}
+	return buf.String()
+}
+
 func GenNodeOfflineMessageCh(ip string) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("节点 ")
