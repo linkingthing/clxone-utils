@@ -95,6 +95,16 @@ func GenHaTriggerMessageEn(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
+func GenHaStateTriggerMessageEn(cmd string) string {
+	buf := bytes.Buffer{}
+	if HaCmd(cmd) == HaCmdMasterUp {
+		buf.WriteString("The HA node switches from slave to master, and the HA high-availability status returns to normal")
+	} else if HaCmd(cmd) == HaCmdMasterDown {
+		buf.WriteString("The HA node switches from master to slave, and the HA high-availability status is abnormal")
+	}
+	return buf.String()
+}
+
 func GenBackupTriggerMessageEn(ip string, start bool) string {
 	buf := bytes.Buffer{}
 	if start {
@@ -104,6 +114,16 @@ func GenBackupTriggerMessageEn(ip string, start bool) string {
 		buf.WriteString("The cluster has been restored. Switch back from the disaster recovery node ")
 		buf.WriteString(ip)
 		buf.WriteString(" to the cluster")
+	}
+	return buf.String()
+}
+
+func GenBackupStateTriggerMessageEn(start bool) string {
+	buf := bytes.Buffer{}
+	if start {
+		buf.WriteString("The cluster switches to the disaster recovery node, and the cluster's high-availability status is abnormal")
+	} else {
+		buf.WriteString("The cluster switches back to the primary node, and the cluster's high-availability status returns to normal")
 	}
 	return buf.String()
 }

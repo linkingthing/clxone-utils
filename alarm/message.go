@@ -145,6 +145,18 @@ func (a *Alarm) AddHaTriggerAlarm(cmd, role, master, slave string) error {
 		CmdHaTriggerAlarm)
 }
 
+func (a *Alarm) AddHaStateTriggerAlarm(cmd string) error {
+	threshold := a.GetThreshold(pb.ThresholdName_haStateTrigger)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		GenHaStateTriggerMessageEn(cmd),
+		GenHaStateTriggerMessageCh(cmd),
+		CmdHaStateTriggerAlarm)
+}
+
 func (a *Alarm) AddBackupTriggerAlarm(ip string, start bool) error {
 	threshold := a.GetThreshold(pb.ThresholdName_backupTrigger)
 	if threshold == nil {
@@ -155,6 +167,18 @@ func (a *Alarm) AddBackupTriggerAlarm(ip string, start bool) error {
 		GenBackupTriggerMessageEn(ip, start),
 		GenBackupTriggerMessageCh(ip, start),
 		CmdBackupTriggerAlarm)
+}
+
+func (a *Alarm) AddBackupStateTriggerAlarm(start bool) error {
+	threshold := a.GetThreshold(pb.ThresholdName_backupStateTrigger)
+	if threshold == nil {
+		return nil
+	}
+
+	return a.sendAlarmToKafka(threshold,
+		GenBackupStateTriggerMessageEn(start),
+		GenBackupStateTriggerMessageCh(start),
+		CmdBackupStateTriggerAlarm)
 }
 
 func (a *Alarm) AddNodeOfflineAlarm(ip string) error {

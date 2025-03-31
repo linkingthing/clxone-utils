@@ -104,15 +104,35 @@ func GenHaTriggerMessageCh(cmd, role, master, slave string) string {
 	return buf.String()
 }
 
+func GenHaStateTriggerMessageCh(cmd string) string {
+	buf := bytes.Buffer{}
+	if HaCmd(cmd) == HaCmdMasterUp {
+		buf.WriteString("Ha节点备切换到主，Ha高可用状态恢复正常")
+	} else if HaCmd(cmd) == HaCmdMasterDown {
+		buf.WriteString("Ha节点主切换到备，Ha高可用状态异常")
+	}
+	return buf.String()
+}
+
 func GenBackupTriggerMessageCh(ip string, start bool) string {
 	buf := bytes.Buffer{}
 	if start {
-		buf.WriteString("集群不可用，切换到灾备节点 ")
+		buf.WriteString("集群从主节点切换到灾备节点 ")
 		buf.WriteString(ip)
 	} else {
-		buf.WriteString("集群恢复，从灾备节点 ")
+		buf.WriteString("集群从灾备节点 ")
 		buf.WriteString(ip)
-		buf.WriteString(" 切回集群")
+		buf.WriteString(" 切换到主节点")
+	}
+	return buf.String()
+}
+
+func GenBackupStateTriggerMessageCh(start bool) string {
+	buf := bytes.Buffer{}
+	if start {
+		buf.WriteString("集群切换到灾备节点，集群高可用状态异常")
+	} else {
+		buf.WriteString("集群切回主节点，集群高可用状态恢复正常")
 	}
 	return buf.String()
 }

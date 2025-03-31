@@ -82,9 +82,29 @@ var baseThresholdMap = map[pb.ThresholdName]*Threshold{
 		SendMail: false,
 		Value:    0,
 	},
+	pb.ThresholdName_haStateTrigger: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_haStateTrigger,
+			Level: pb.ThresholdLevel_critical,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: false,
+		Value:    0,
+	},
 	pb.ThresholdName_backupTrigger: {
 		BaseThreshold: &pb.BaseThreshold{
 			Name:  pb.ThresholdName_backupTrigger,
+			Level: pb.ThresholdLevel_critical,
+			Type:  pb.ThresholdType_trigger,
+		},
+		Enabled:  true,
+		SendMail: false,
+		Value:    0,
+	},
+	pb.ThresholdName_backupStateTrigger: {
+		BaseThreshold: &pb.BaseThreshold{
+			Name:  pb.ThresholdName_backupStateTrigger,
 			Level: pb.ThresholdLevel_critical,
 			Type:  pb.ThresholdType_trigger,
 		},
