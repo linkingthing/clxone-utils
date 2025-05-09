@@ -10,7 +10,21 @@ type RStoreMocker struct {
 	*Mocker
 }
 
+func (m *RStoreMocker) DropSchemas(dropSchemas ...string) error {
+	m.schema = ""
+	return nil
+}
+
+func (m *RStoreMocker) GetSchema() string {
+	return m.schema
+}
+
+func (m *RStoreMocker) SetSchema(s string) {
+	m.schema = s
+}
+
 type Mocker struct {
+	schema     string
 	expectMsgs []*expectMsg
 }
 
@@ -47,7 +61,7 @@ const (
 	ExpectMethodFillEx     ExpectMethod = "FillEx"
 	ExpectMethodExec       ExpectMethod = "Exec"
 	ExpectMethodCopyFromEx ExpectMethod = "CopyFromEx"
-	ExpectMethodCopyFrom 	ExpectMethod = "CopyFrom"
+	ExpectMethodCopyFrom   ExpectMethod = "CopyFrom"
 	ExpectMethodBegin      ExpectMethod = "Begin"
 	ExpectMethodCommit     ExpectMethod = "Commit"
 	ExpectMethodRollback   ExpectMethod = "Rollback"
