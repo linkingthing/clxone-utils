@@ -49,6 +49,18 @@ func GenStoreUsageMessageCh(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
+func GenTemperatureUsageMessageCh(ip string, value, limit uint64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("节点 ")
+	buf.WriteString(ip)
+	buf.WriteString(" 的CPU温度")
+	buf.WriteString(strconv.FormatUint(value, 10))
+	buf.WriteString("°C 超过了")
+	buf.WriteString(strconv.FormatUint(limit, 10))
+	buf.WriteString("°C")
+	return buf.String()
+}
+
 func GenSubnetRadioMessageCh(ip, subnet string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("节点 ")

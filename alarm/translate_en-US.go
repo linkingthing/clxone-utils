@@ -41,6 +41,18 @@ func GenStoreUsageMessageEn(ip string, value, limit uint64) string {
 	return buf.String()
 }
 
+func GenTemperatureUsageMessageEn(ip string, value, limit uint64) string {
+	buf := bytes.Buffer{}
+	buf.WriteString("node ")
+	buf.WriteString(ip)
+	buf.WriteString("cpu temperature value ")
+	buf.WriteString(strconv.FormatUint(value, 10))
+	buf.WriteString("°C exceeds ")
+	buf.WriteString(strconv.FormatUint(limit, 10))
+	buf.WriteString("°C")
+	return buf.String()
+}
+
 func GenSubnetRadioMessageEn(ip, subnet string, value, limit uint64) string {
 	buf := bytes.Buffer{}
 	buf.WriteString("node ")
